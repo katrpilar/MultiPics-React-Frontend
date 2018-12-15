@@ -1,4 +1,3 @@
-import axios from 'axios'
 import React, { Fragment, Component } from "react"
 import ReactDOM from 'react-dom'
 import { MuiThemeProvider, 
@@ -9,21 +8,14 @@ import { MuiThemeProvider,
         CardActions, CardHeader,
         CardActionArea, CardMedia,
         IconButton, Input, InputBase,
-        TextField, Grow, Menu, MenuItem, Paper } from '@material-ui/core';
+        TextField, Grow, Menu, MenuItem } from '@material-ui/core';
 import styled from 'styled-components'
 // import MenuIcon from '@material-ui/icons/Menu'
 import Hidden from '@material-ui/core/Hidden'
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search'
-import TopNav from './common/TopNav'
-// import { withStyles } from '@material-ui/core/styles';
-
-
 
 const theme = createMuiTheme({
-    root: {
-      flexGrow: 1,
-    },
     palette: {
       primary: {
         light: 'rgb(229, 216, 255)',
@@ -95,59 +87,34 @@ const theme = createMuiTheme({
   box-shadow: 0 3px 5px 2px rgba(255, 105, 135, .3);
 `
 
-class App extends Component {
-  state = {
-    unsplash: []
-  }
-
-
-  componentDidMount() {
-    // axios.get('/api/images')
-    // .then(response => {
-    //   const images = response.data
-    //   this.setState(() => { return { images: images }})
-    // })
-    // .catch(function (error) {
-    //   console.log(error)
-    // });
-
-    //get Unsplash Results
-    axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=1&query=office`)
-    .then(response => {
-      const unsplash = response.data.results
-      this.setState(() => { return { unsplash: unsplash }})
-      console.log("send Unsplash Api Request")
-    })
-    .catch(function (error) {
-      console.log(error)
-    });
-   }
-
-  render() {
-    return (
+  class TopNav extends Component {
+    render() {
+    return (          
       <MuiThemeProvider theme={theme}>
-        <Grid container direction="row" spacing={40}>
-            <Grid item xs={12} justify="space-evenly">
-              <TopNav />
-            </Grid>
-            <Grid item xs={1} md={2} lg={2} xl={3}></Grid>
-            <Grid item xs={10} md={8} lg={8} xl={8}>
-              <Grid container direction="row">
-                {this.state.unsplash.map((obj, indx) => 
-                  <Grid item xs={10} md={8} lg={3} xl={1} alignContent="flex-start" key={indx}>
-                    <img src={obj.links.download} style={{width: '100%', height: '100%;'}}></img><br></br>
-                    <Typography variant="p" align="left" >
-                      Source: <a href={obj.user.portfolio_url}>{obj.user.name}</a> on <a href="https://unsplash.com/">Unsplash</a>
-                    </Typography>
-                    <Button color="secondary" href={obj.links.download} size="medium" variant="contained" style={{width: 'fit-conent !important'}}>Download</Button>
-                    </Grid>)}
-              </Grid>
-            </Grid>
-        </Grid>
-      </ MuiThemeProvider>
-      
-    );
-  }
-}
+      <AppBar position="absolute" elevation={0} style={{color: theme.palette.primary.main}}>      
+        <Toolbar>
+        <Grid justify="space-around" container spacing={24} alignItems="center">
+          <Typography variant="h4" gutterBottom="false" style={{color: theme.palette.primary.contrastText}}>
+            AllFreeStock
+          </Typography>
+          {/* <IconButton color="inherit" aria-label="Menu">
+            <MenuIcon fontSize="large" style={{color: 'white'}}></MenuIcon>
+          </IconButton> */}
+          {/* <Typography variant="h6" style={{color: theme.palette.primary.contrastText}}>
+            Find Events
+          </Typography>
+          <Typography variant="h6" style={{color: theme.palette.primary.contrastText}}>
+            News
+          </Typography> */}
+          
+          <Button color="secondary" variant="outlined">Search Now</Button>
 
-export default App;
+          {/* <StyledButton color="secondary.main" style={{color: theme.palette.primary.contrastText}}>Login</StyledButton> */}
+          </Grid>
+        </Toolbar>
+      </AppBar>
+      </MuiThemeProvider>
+    );
+  }}
+
+  export default TopNav;
