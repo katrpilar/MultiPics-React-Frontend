@@ -4,15 +4,25 @@ import axios from 'axios'
 
 class App extends Component {
   state = {
-    images: []
+    unsplash: []
   }
 
 
   componentDidMount() {
-    axios.get('/api/images')
+    // axios.get('/api/images')
+    // .then(response => {
+    //   const images = response.data
+    //   this.setState(() => { return { images: images }})
+    // })
+    // .catch(function (error) {
+    //   console.log(error)
+    // });
+
+    //get Unsplash Results
+    axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=1&query=office`)
     .then(response => {
-      const images = response.data
-      this.setState({ images })
+      const unsplash = response.data.results
+      this.setState(() => { return { unsplash: unsplash }})
     })
     .catch(function (error) {
       console.log(error)
@@ -23,7 +33,12 @@ class App extends Component {
     return (
       <div>
         <ul>
-          {this.state.images.map((obj, indx) => <li key={indx}>{obj.link}</li>)}
+          {this.state.unsplash.map((obj, indx) => 
+          <li key={indx}>
+            Source: <a href="https://unsplash.com/">Unsplash</a>
+            <a href={obj.links.download}>Download</a><br></br>
+            By: <a href={obj.user.portfolio_url}>{obj.user.name}</a><br></br>
+            </li>)}
         </ul>
       </div>
     );
