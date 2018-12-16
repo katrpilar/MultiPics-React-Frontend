@@ -12,11 +12,18 @@ import { MuiThemeProvider,
         TextField, Grow, Menu, MenuItem, Paper } from '@material-ui/core';
 import styled from 'styled-components'
 // import MenuIcon from '@material-ui/icons/Menu'
-import Hidden from '@material-ui/core/Hidden'
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search'
+// import Hidden from '@material-ui/core/Hidden'
+// import MenuIcon from '@material-ui/icons/Menu';
+// import SearchIcon from '@material-ui/icons/Search'
 import TopNav from './common/TopNav'
 // import { withStyles } from '@material-ui/core/styles';
+import Gallery from 'react-photo-gallery'
+import {
+  SortableContainer,
+  SortableElement,
+  arrayMove
+} from "react-sortable-hoc";
+
 
 
 
@@ -97,7 +104,9 @@ const theme = createMuiTheme({
 
 class App extends Component {
   state = {
-    unsplash: []
+    unsplash: [],
+    query: '',
+    pics: []
   }
 
 
@@ -116,6 +125,18 @@ class App extends Component {
     .then(response => {
       const unsplash = response.data.results
       this.setState(() => { return { unsplash: unsplash }})
+      let photos = []
+      let pics = this.state.unsplash.map((obj, indx) => {
+        let hsh = new Object()
+        hsh.src = obj.links.download
+        hsh.width = obj.width
+        hsh.height = obj.height
+        hsh.key = indx
+        photos.push(hsh)
+        // console.log(photos)
+        console.log(this.state.pics)
+      })
+      this.setState(() => {return { pics: photos}});
       console.log("send Unsplash Api Request")
     })
     .catch(function (error) {
@@ -127,21 +148,27 @@ class App extends Component {
     return (
       <MuiThemeProvider theme={theme}>
         <Grid container direction="row" spacing={40}>
-            <Grid item xs={12} justify="space-evenly">
+            <Grid item xs={12} >
               <TopNav />
             </Grid>
-            <Grid item xs={1} md={2} lg={2} xl={3}></Grid>
-            <Grid item xs={10} md={8} lg={8} xl={8}>
-              <Grid container direction="row">
+            <Grid item >
+              <Gallery photos={this.state.pics} />
+              {/* <Grid container direction="row">
                 {this.state.unsplash.map((obj, indx) => 
                   <Grid item xs={10} md={8} lg={3} xl={1} alignContent="flex-start" key={indx}>
-                    <img src={obj.links.download} style={{width: '100%', height: '100%;'}}></img><br></br>
-                    <Typography variant="p" align="left" >
-                      Source: <a href={obj.user.portfolio_url}>{obj.user.name}</a> on <a href="https://unsplash.com/">Unsplash</a>
-                    </Typography>
-                    <Button color="secondary" href={obj.links.download} size="medium" variant="contained" style={{width: 'fit-conent !important'}}>Download</Button>
+                    <div style={{width:'auto',height:'100%',position: 'realative'}}>
+                      <img src={obj.links.download} style={{width: '100%', height: '100%'}}></img>
+                      <div style={{position: 'relative'}}>
+                      <Typography variant="subtitle1" align="left" style={{top: '-270px', position: 'relative'}}>
+                        <a href="https://unsplash.com/" style={{color: theme.palette.primary.contrastText, textDecoration: 'none'}}>Unsplash - </a>
+                        <a href={obj.user.portfolio_url} style={{color: theme.palette.primary.contrastText, textDecoration: 'none'}}>{obj.user.name}</a>
+                        <Button color="secondary" href={obj.links.download} size="small" variant="flat" style={{width: 'fit-conent'}}>Download</Button>
+                      </Typography>
+                     
+                      </div>
+                    </div>
                     </Grid>)}
-              </Grid>
+              </Grid> */}
             </Grid>
         </Grid>
       </ MuiThemeProvider>

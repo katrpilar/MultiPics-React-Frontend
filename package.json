@@ -8,7 +8,9 @@
     "axios": "^0.18.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-photo-gallery": "^6.2.2",
     "react-scripts": "2.1.1",
+    "react-sortable-hoc": "^0.8.4",
     "styled-components": "^4.1.2"
   },
   "scripts": {

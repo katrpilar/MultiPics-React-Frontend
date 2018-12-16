@@ -94,7 +94,7 @@ const theme = createMuiTheme({
       <AppBar position="absolute" elevation={0} style={{color: theme.palette.primary.main}}>      
         <Toolbar>
         <Grid justify="space-around" container spacing={24} alignItems="center">
-          <Typography variant="h4" gutterBottom="false" style={{color: theme.palette.primary.contrastText}}>
+          <Typography variant="h4" gutterBottom={false} style={{color: theme.palette.primary.contrastText}}>
             AllFreeStock
           </Typography>
           {/* <IconButton color="inherit" aria-label="Menu">
