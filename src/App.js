@@ -117,9 +117,14 @@ class App extends Component {
 
 
   componentDidMount() {
-    //get Unsplash Results
+    //setting temporary photos array to manipulate before adding to component state
     let photos = []
+
+    //A counter for the 'keys' of each image object to allow the state to tie 'metadata' to each image
+    //TBD used to persist data to the Rails API backend database
     let initialIndex = 0;
+
+    //UNSPLASH API GET REQUEST
     axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=1&query=office`)
     .then(response => {
       const unsplash = response.data.results
@@ -128,98 +133,86 @@ class App extends Component {
       this.state.unsplash.map((obj, indx) => {
         initialIndex++
         let hsh = new Object()
-        //Use below for fullsize image
-        // hsh.src = obj.links.download
         hsh.src = obj.urls.thumb
         hsh.width = obj.width
         hsh.height = obj.height
-        hsh.key = initialIndex
-        // hsh.download = obj.links.download
-        
-        //setting additional photo information as state object tied to:
-        //the fullsize image download url, the brand source name, the brand link,
-        //the photographer name, and photographer profile url
+        hsh.key = initialIndex        
+        //Set Unsplash image's state metadata
         let newMeta = this.state.metadata
         newMeta[initialIndex] = {download: obj.links.download, brand: 'Unsplash', link: 'https://unsplash.com/', photographer: obj.user.name, profile: obj.user.portfolio_url};
         this.setState(() => {return {metadata: newMeta}})
-        photos.push(hsh)
-        // console.log(photos)
-        // console.log(this.state.pics)
-        
+        photos.push(hsh)        
       })
-      console.log("send Unsplash Api Request")
+      console.log("SUCCESS - Unsplash Api GET Request")
     })
     .catch(function (errors) {
+      console.log('FAIL - Unsplash Api GET Request')
       console.log(errors)
     });
 
-
+    ///////////////////////////////////////////////////////
+    //PEXELS API GET REQUEST
     axios.get(`https://api.pexels.com/v1/search?query=office+query&per_page=10&page=1`, {'headers': {'Authorization': process.env.REACT_APP_PEXELS_API_KEY}})
       .then(resp => {
         const pexels = resp.data.photos
         this.setState(() => { return { pexels: pexels }})
-        // let next = {...this.state, pexels: pexels}
-        // this.setState(next)
-        // console.log(pexels)
         this.state.pexels.map((obj, indx) => {
           initialIndex++
           let hshh = new Object()
           hshh.src = obj.src.tiny
-          //Use below for fullsize image
-          // hshh.src = obj.src.original
           hshh.width = obj.width
           hshh.height = obj.height
           hshh.key = initialIndex
-
+          //Set Pexels image's state metadata
           let newMeta = this.state.metadata
           newMeta[initialIndex] = {download: obj.src.original, brand: 'Pexels', link: 'https://www.pexels.com/', photographer: obj.photographer, profile: obj.photographer_url};
           this.setState(() => {return {metadata: newMeta}})
           photos.push(hshh)
         })
-        console.log("sent Pexels Api Request")
+        console.log("SUCCESS - Pexels Api GET Request")
       })
       .catch(function (error) {
+        console.log('FAIL - Pexels Api GET Request')
         console.log(error)
       });
+
+      ///////////////////////////////////////////////////////
 
       axios.get(`https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=office&per_page=10&page=1`)
       .then(resp => {
         console.log(resp)
         const pixabay = resp.data.hits
         this.setState(() => { return { pixabay: pixabay }})
-        // let next = {...this.state, pixabay: pixabay}
-        // this.setState(next)
-        // console.log(pixabay)
         this.state.pixabay.map((obj, indx) => {
           initialIndex++
           let hshh = new Object()
           hshh.src = obj.previewURL
-          //Use below for fullsize image
-          // hshh.src = obj.largeImageURL
           hshh.width = obj.previewWidth
           hshh.height = obj.previewHeight
           hshh.key = initialIndex
-
+          //Set Pixabay image's state metadata
           let newMeta = this.state.metadata
           newMeta[initialIndex] = {download: obj.largeImageURL, brand: 'Pixabay', link: 'https://www.pixabay.com/', photographer: obj.user, profile: `https://pixabay.com/users/${obj.user}-${obj.user_id}/`};
           this.setState(() => {return {metadata: newMeta}})
           photos.push(hshh)
         })
-        console.log("sent pixabay Api Request")
+        console.log("SUCCESS - Pixabay Api GET Request")
       })
       .catch(function (error) {
+        console.log('FAIL - Pixabay Api GET Request')
         console.log(error)
       });
     this.setState(() => {return { pics: photos}});
 
    } //end of componentDidMount()
 
+///////////////////////////////////////////////////////
    onSortEnd = ({ oldIndex, newIndex }) => {
     this.setState({
       pics: arrayMove(this.state.pics, oldIndex, newIndex)
     });
   };
-
+///////////////////////////////////////////////////////
   render() {
     return (
       <MuiThemeProvider theme={theme}>
