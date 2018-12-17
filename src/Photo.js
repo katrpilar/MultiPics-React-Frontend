@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 const imgWithClick = { cursor: "pointer" };
 
 const Photo = ({ index, onClick, photo, margin, direction, top, left }) => {
-  // debugger;
   const imgStyle = { margin: margin };
   if (direction === "column") {
     imgStyle.position = "absolute";
@@ -28,13 +27,16 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left }) => {
     // onMouseOver(event, {  })
   };
 
+  
+
   return (
     // onMouseOver={(event) => handleMouseOver(event)}
-    <div>
+    <div >
       <img
         style={onClick ? { ...imgStyle, ...imgWithClick } : imgStyle}
         {...photo}
         onClick={onClick ? handleClick : null}
+        
         alt="img"
       />
       {/* <h6 style={{display: 'none'}}>Hello</h6> */}
