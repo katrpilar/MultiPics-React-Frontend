@@ -129,7 +129,7 @@ class App extends Component {
         hsh.key = indx
         photos.push(hsh)
         // console.log(photos)
-        console.log(this.state.pics)
+        // console.log(this.state.pics)
         
       })
       this.setState(() => {return { pics: photos}});
