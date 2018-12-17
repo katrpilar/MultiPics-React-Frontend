@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { Fragment, Component } from "react"
-import ReactDOM from 'react-dom'
+import { render } from 'react-dom'
 import { MuiThemeProvider, 
         createMuiTheme,
         Button, AppBar,
@@ -23,8 +23,7 @@ import {
   SortableElement,
   arrayMove
 } from "react-sortable-hoc";
-
-
+import Photo from "./Photo";
 
 
 const theme = createMuiTheme({
@@ -101,25 +100,21 @@ const theme = createMuiTheme({
   padding: 0 30px;
   box-shadow: 0 3px 5px 2px rgba(255, 105, 135, .3);
 `
+const SortablePhoto = SortableElement(Photo);
+const SortableGallery = SortableContainer(({ photos }) => {
+  return <Gallery photos={photos} columns={4} ImageComponent={SortablePhoto} />;
+});
 
 class App extends Component {
   state = {
     unsplash: [],
     query: '',
-    pics: []
+    pics: [],
+    
   }
 
 
   componentDidMount() {
-    // axios.get('/api/images')
-    // .then(response => {
-    //   const images = response.data
-    //   this.setState(() => { return { images: images }})
-    // })
-    // .catch(function (error) {
-    //   console.log(error)
-    // });
-
     //get Unsplash Results
     axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=1&query=office`)
     .then(response => {
@@ -135,6 +130,7 @@ class App extends Component {
         photos.push(hsh)
         // console.log(photos)
         console.log(this.state.pics)
+        
       })
       this.setState(() => {return { pics: photos}});
       console.log("send Unsplash Api Request")
@@ -144,6 +140,12 @@ class App extends Component {
     });
    }
 
+   onSortEnd = ({ oldIndex, newIndex }) => {
+    this.setState({
+      pics: arrayMove(this.state.pics, oldIndex, newIndex)
+    });
+  };
+
   render() {
     return (
       <MuiThemeProvider theme={theme}>
@@ -152,7 +154,12 @@ class App extends Component {
               <TopNav />
             </Grid>
             <Grid item >
-              <Gallery photos={this.state.pics} />
+            <SortableGallery
+              axis={"xy"}
+              photos={this.state.pics}
+              onSortEnd={this.onSortEnd}
+            />
+              {/* <Gallery photos={this.state.pics} /> */}
               {/* <Grid container direction="row">
                 {this.state.unsplash.map((obj, indx) => 
                   <Grid item xs={10} md={8} lg={3} xl={1} alignContent="flex-start" key={indx}>
