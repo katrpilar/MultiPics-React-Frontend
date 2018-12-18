@@ -124,27 +124,29 @@ class App extends Component {
   handleSubmit = (event) => {
     if(this.state.page === 0){
       let photos = []
-      this.setState({ page: 1})
-      this.getPictures(0, photos);
+      let next = this.state.page + 1
+      this.setState({ page: next})
+      this.getPictures(1, photos, next);
     }else{
       let indx = this.state.pics.length
       let photos = this.state.pics
       let next = this.state.page + 1
       this.setState({ page: next})
-      this.getPictures(indx, photos);
+      this.getPictures(indx, photos, next);
     }
     event.preventDefault();
   }
 
-  getPictures = (initialIndex, photos) => {
+  getPictures = (ind, photos, page) => {
+    let initialIndex = ind;
      // alert('A name was submitted: ' + this.state.query);
     //setting temporary photos array to manipulate before adding to component state
 
     //A counter for the 'keys' of each image object to allow the state to tie 'metadata' to each image
     //TBD used to persist data to the Rails API backend database
-
+    console.log(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=${page}&query=${this.state.query}`)
     //UNSPLASH API GET REQUEST
-    axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=${this.state.page}&query=${this.state.query}`)
+    axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=${page}&query=${this.state.query}`)
     .then(response => {
       const unsplash = response.data.results
       // let unsplashMetadata
@@ -173,7 +175,7 @@ class App extends Component {
 
     // ///////////////////////////////////////////////////////
     // //PEXELS API GET REQUEST
-    axios.get(`https://api.pexels.com/v1/search?query=${this.state.query}+query&per_page=10&page=${this.state.page}`, {'headers': {'Authorization': process.env.REACT_APP_PEXELS_API_KEY}})
+    axios.get(`https://api.pexels.com/v1/search?query=${this.state.query}+query&per_page=10&page=${page}`, {'headers': {'Authorization': process.env.REACT_APP_PEXELS_API_KEY}})
       .then(resp => {
         const pexels = resp.data.photos
         this.setState(() => { return { pexels: pexels }})
@@ -201,7 +203,7 @@ class App extends Component {
 
     //   ///////////////////////////////////////////////////////
     //   //PIXABAY API GET REQUEST
-      axios.get(`https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${this.state.query}&per_page=10&page=${this.state.page}`)
+      axios.get(`https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${this.state.query}&per_page=10&page=${page}`)
       .then(resp => {
         console.log(resp)
         const pixabay = resp.data.hits

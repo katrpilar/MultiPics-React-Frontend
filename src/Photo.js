@@ -11,7 +11,7 @@ import {Input, MenuItem} from '@material-ui/core'
 const imgWithClick = { cursor: "pointer" };
 
 const Photo = ({ index, onClick, photo, margin, direction, top, left, metadata }) => {
-  console.log(photo)
+  // console.log(photo)
   const imgStyle = { margin: margin};
   if (direction === "column") {
     imgStyle.position = "absolute";
@@ -32,12 +32,12 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, metadata }
     // event.currentTarget to return the element moused over
     // console.log(event);
     // onMouseOver(event, {  })
-    console.log(event.target);
+    // console.log(event.target);
   };
 
   var partial;
   const handleEnter = () => {
-    console.log("Mouse Over")
+    // console.log("Mouse Over")
     partial = true;
   }
 
