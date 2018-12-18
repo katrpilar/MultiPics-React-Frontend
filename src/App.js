@@ -127,7 +127,7 @@ class App extends Component {
       this.setState({ page: 1})
       this.getPictures(0, photos);
     }else{
-      let indx = this.state.photos.count
+      let indx = this.state.pics.length
       let photos = this.state.pics
       let next = this.state.page + 1
       this.setState({ page: next})
@@ -144,7 +144,7 @@ class App extends Component {
     //TBD used to persist data to the Rails API backend database
 
     //UNSPLASH API GET REQUEST
-    axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=1&query=${this.state.query}`)
+    axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=${this.state.page}&query=${this.state.query}`)
     .then(response => {
       const unsplash = response.data.results
       // let unsplashMetadata
@@ -173,7 +173,7 @@ class App extends Component {
 
     // ///////////////////////////////////////////////////////
     // //PEXELS API GET REQUEST
-    axios.get(`https://api.pexels.com/v1/search?query=${this.state.query}+query&per_page=10&page=1`, {'headers': {'Authorization': process.env.REACT_APP_PEXELS_API_KEY}})
+    axios.get(`https://api.pexels.com/v1/search?query=${this.state.query}+query&per_page=10&page=${this.state.page}`, {'headers': {'Authorization': process.env.REACT_APP_PEXELS_API_KEY}})
       .then(resp => {
         const pexels = resp.data.photos
         this.setState(() => { return { pexels: pexels }})
@@ -201,7 +201,7 @@ class App extends Component {
 
     //   ///////////////////////////////////////////////////////
     //   //PIXABAY API GET REQUEST
-      axios.get(`https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${this.state.query}&per_page=10&page=1`)
+      axios.get(`https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${this.state.query}&per_page=10&page=${this.state.page}`)
       .then(resp => {
         console.log(resp)
         const pixabay = resp.data.hits
@@ -237,10 +237,10 @@ class App extends Component {
     console.log(this.state.metadata);
   }
 
-  handleMore = (event) => {
-    this.setState({ page: this.state.page + 1})
-    console.log("So you want to show more eh?")
-  }
+  // handleMore = (event) => {
+  //   this.setState({ page: this.state.page + 1})
+  //   console.log("So you want to show more eh?")
+  // }
 
 ///////////////////////////////////////////////////////
    onSortEnd = ({ oldIndex, newIndex }) => {
@@ -281,7 +281,7 @@ class App extends Component {
               onSortEnd={this.onSortEnd}
             />
             <Grid item>
-            <Button color="secondary" href="#" size="small" variant="outlined" style={{width: 'fit-conent'}} onClick={this.handleMore}>Show More</Button>
+            <Button color="secondary" href="#" size="small" variant="outlined" style={{width: 'fit-conent'}} onClick={this.handleSubmit}>Show More</Button>
             </Grid>
               {/* <Gallery photos={this.state.pics} /> */}
               {/* <Grid container direction="row">
