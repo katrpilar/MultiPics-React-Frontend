@@ -196,9 +196,9 @@ class App extends Component {
         this.state.pixabay.map((obj, indx) => {
           initialIndex++
           let hshh = new Object()
-          hshh.src = obj.previewURL
-          hshh.width = obj.previewWidth
-          hshh.height = obj.previewHeight
+          hshh.src = obj.webformatURL
+          hshh.width = obj.webformatWidth - 300
+          hshh.height = obj.webformatHeight - 200
           hshh.key = initialIndex.toString()
           hshh.metadata = {download: obj.largeImageURL, brand: 'Pixabay', link: 'https://www.pixabay.com/', photographer: obj.user, profile: `https://pixabay.com/users/${obj.user}-${obj.user_id}/`};
           //Set Pixabay image's state metadata
@@ -235,21 +235,26 @@ class App extends Component {
   render() {
     return (
       <MuiThemeProvider theme={theme}>
-        <Grid container direction="row" spacing={40}>
+        <Grid container direction="column" alignItems="center" >
             <Grid item xs={12} >
               <TopNav />
             </Grid>
-            <Grid item>
-            <form onSubmit={this.handleSubmit} >
-              <TextField
-                id="standard-search"
-                label="Search field"
-                type="search"
-                margin="normal"
-                onChange={(e) => this.state.query = e.target.value}
-              />
-              <Button color="secondary" href="#" size="small" variant="outlined" type="submit" onClick={this.handleSubmit}>Go</Button>
-          </form>
+            <Grid item xs={12}  style={{marginTop: '50px'}}>
+              <Grid container direction="row" alignItems="center">
+                <Grid item>
+                  <form onSubmit={this.handleSubmit} >
+                    <TextField
+                      id="standard-search"
+                      label="Search field"
+                      type="search"
+                      margin="normal"
+                      onChange={(e) => this.state.query = e.target.value}
+                    />
+                    <Button color="secondary" href="#" size="small" variant="outlined" type="submit" onClick={this.handleSubmit} style={{verticalAlign: 'bottom'}}>Go</Button>
+                  </form>
+                </Grid>
+              </Grid>
+            
             </Grid>
             <Grid item >
             <SortableGallery
