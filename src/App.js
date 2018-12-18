@@ -102,7 +102,7 @@ const theme = createMuiTheme({
 `
 const SortablePhoto = SortableElement(Photo);
 const SortableGallery = SortableContainer(({ photos}) => {
-  return <Gallery photos={photos} columns={5} ImageComponent={SortablePhoto} />;
+  return <Gallery photos={photos} columns={5} direction="row" ImageComponent={SortablePhoto} />;
 });
 
 class App extends Component {
@@ -112,6 +112,7 @@ class App extends Component {
     query: '',
     pics: [],
     pixabay: [],
+    page: 0,
   }
 
 
@@ -121,14 +122,26 @@ class App extends Component {
    } //end of componentDidMount()
 
   handleSubmit = (event) => {
+    if(this.state.page === 0){
+      let photos = []
+      this.setState({ page: 1})
+      this.getPictures(0, photos);
+    }else{
+      let indx = this.state.photos.count
+      let photos = this.state.pics
+      let next = this.state.page + 1
+      this.setState({ page: next})
+      this.getPictures(indx, photos);
+    }
     event.preventDefault();
-    // alert('A name was submitted: ' + this.state.query);
+  }
+
+  getPictures = (initialIndex, photos) => {
+     // alert('A name was submitted: ' + this.state.query);
     //setting temporary photos array to manipulate before adding to component state
-    let photos = []
 
     //A counter for the 'keys' of each image object to allow the state to tie 'metadata' to each image
     //TBD used to persist data to the Rails API backend database
-    let initialIndex = 0;
 
     //UNSPLASH API GET REQUEST
     axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=1&query=${this.state.query}`)
@@ -224,6 +237,11 @@ class App extends Component {
     console.log(this.state.metadata);
   }
 
+  handleMore = (event) => {
+    this.setState({ page: this.state.page + 1})
+    console.log("So you want to show more eh?")
+  }
+
 ///////////////////////////////////////////////////////
    onSortEnd = ({ oldIndex, newIndex }) => {
     this.setState({
@@ -262,6 +280,9 @@ class App extends Component {
               photos={this.state.pics}
               onSortEnd={this.onSortEnd}
             />
+            <Grid item>
+            <Button color="secondary" href="#" size="small" variant="outlined" style={{width: 'fit-conent'}} onClick={this.handleMore}>Show More</Button>
+            </Grid>
               {/* <Gallery photos={this.state.pics} /> */}
               {/* <Grid container direction="row">
                 {this.state.unsplash.map((obj, indx) => 

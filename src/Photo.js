@@ -54,10 +54,10 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, metadata }
         onClick={onClick ? handleClick : null}
         alt="img"
       />
-      <p style={{position: 'relative', top: '-15px', margin: '0px'}}>
+      <div style={{position: 'relative', top: '-15px', margin: '0px'}}>
           <a href={photo.metadata.profile} target="_blank" style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'left', paddingLeft: '8px'}}>{photo.metadata.photographer}</a>
           <a href={photo.metadata.link} target="_blank" style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'right', paddingRight: '8px'}}>{photo.metadata.brand}</a>
-        </p>
+        </div>
       {/* <div style={{position: 'relative'}}> */}
         
         {/* <Select >
