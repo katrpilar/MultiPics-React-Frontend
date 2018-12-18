@@ -101,7 +101,7 @@ const theme = createMuiTheme({
   box-shadow: 0 3px 5px 2px rgba(255, 105, 135, .3);
 `
 const SortablePhoto = SortableElement(Photo);
-const SortableGallery = SortableContainer(({ photos }) => {
+const SortableGallery = SortableContainer(({ photos}) => {
   return <Gallery photos={photos} columns={5} ImageComponent={SortablePhoto} />;
 });
 
@@ -112,11 +112,17 @@ class App extends Component {
     query: '',
     pics: [],
     pixabay: [],
-    metadata: {},    
   }
 
 
   componentDidMount() {
+    
+
+   } //end of componentDidMount()
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    // alert('A name was submitted: ' + this.state.query);
     //setting temporary photos array to manipulate before adding to component state
     let photos = []
 
@@ -125,7 +131,7 @@ class App extends Component {
     let initialIndex = 0;
 
     //UNSPLASH API GET REQUEST
-    axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=1&query=office`)
+    axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=1&query=${this.state.query}`)
     .then(response => {
       const unsplash = response.data.results
       // let unsplashMetadata
@@ -136,11 +142,13 @@ class App extends Component {
         hsh.src = obj.urls.thumb
         hsh.width = obj.width
         hsh.height = obj.height
-        hsh.key = initialIndex        
+        hsh.key = initialIndex.toString()
+        hsh.metadata = {download: obj.links.download, brand: 'Unsplash', link: 'https://unsplash.com/', photographer: obj.user.name, profile: obj.user.portfolio_url};
+
         //Set Unsplash image's state metadata
-        let newMeta = this.state.metadata
-        newMeta[initialIndex] = {download: obj.links.download, brand: 'Unsplash', link: 'https://unsplash.com/', photographer: obj.user.name, profile: obj.user.portfolio_url};
-        this.setState(() => {return {metadata: newMeta}})
+        // let newMeta = this.state.metadata
+        // newMeta[initialIndex] = {download: obj.links.download, brand: 'Unsplash', link: 'https://unsplash.com/', photographer: obj.user.name, profile: obj.user.portfolio_url};
+        // this.setState(() => {return {metadata: newMeta}})
         photos.push(hsh)        
       })
       console.log("SUCCESS - Unsplash Api GET Request")
@@ -150,9 +158,9 @@ class App extends Component {
       console.log(errors)
     });
 
-    ///////////////////////////////////////////////////////
-    //PEXELS API GET REQUEST
-    axios.get(`https://api.pexels.com/v1/search?query=office+query&per_page=10&page=1`, {'headers': {'Authorization': process.env.REACT_APP_PEXELS_API_KEY}})
+    // ///////////////////////////////////////////////////////
+    // //PEXELS API GET REQUEST
+    axios.get(`https://api.pexels.com/v1/search?query=${this.state.query}+query&per_page=10&page=1`, {'headers': {'Authorization': process.env.REACT_APP_PEXELS_API_KEY}})
       .then(resp => {
         const pexels = resp.data.photos
         this.setState(() => { return { pexels: pexels }})
@@ -163,10 +171,12 @@ class App extends Component {
           hshh.width = obj.width
           hshh.height = obj.height
           hshh.key = initialIndex
+          hshh.id = initialIndex.toString()
+          hshh.metadata = {download: obj.src.original, brand: 'Pexels', link: 'https://www.pexels.com/', photographer: obj.photographer, profile: obj.photographer_url};
           //Set Pexels image's state metadata
-          let newMeta = this.state.metadata
-          newMeta[initialIndex] = {download: obj.src.original, brand: 'Pexels', link: 'https://www.pexels.com/', photographer: obj.photographer, profile: obj.photographer_url};
-          this.setState(() => {return {metadata: newMeta}})
+          // let newMeta = this.state.metadata
+          // newMeta[initialIndex] = {download: obj.src.original, brand: 'Pexels', link: 'https://www.pexels.com/', photographer: obj.photographer, profile: obj.photographer_url};
+          // this.setState(() => {return {metadata: newMeta}})
           photos.push(hshh)
         })
         console.log("SUCCESS - Pexels Api GET Request")
@@ -176,9 +186,9 @@ class App extends Component {
         console.log(error)
       });
 
-      ///////////////////////////////////////////////////////
-
-      axios.get(`https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=office&per_page=10&page=1`)
+    //   ///////////////////////////////////////////////////////
+    //   //PIXABAY API GET REQUEST
+      axios.get(`https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${this.state.query}&per_page=10&page=1`)
       .then(resp => {
         console.log(resp)
         const pixabay = resp.data.hits
@@ -189,11 +199,13 @@ class App extends Component {
           hshh.src = obj.previewURL
           hshh.width = obj.previewWidth
           hshh.height = obj.previewHeight
-          hshh.key = initialIndex
+          hshh.key = initialIndex.toString()
+          hshh.metadata = {download: obj.largeImageURL, brand: 'Pixabay', link: 'https://www.pixabay.com/', photographer: obj.user, profile: `https://pixabay.com/users/${obj.user}-${obj.user_id}/`};
           //Set Pixabay image's state metadata
-          let newMeta = this.state.metadata
-          newMeta[initialIndex] = {download: obj.largeImageURL, brand: 'Pixabay', link: 'https://www.pixabay.com/', photographer: obj.user, profile: `https://pixabay.com/users/${obj.user}-${obj.user_id}/`};
-          this.setState(() => {return {metadata: newMeta}})
+          // let newMeta = this.state.metadata
+          // // let idAsStr = initialIndex.toString();
+          // newMeta[initialIndex] = {download: obj.largeImageURL, brand: 'Pixabay', link: 'https://www.pixabay.com/', photographer: obj.user, profile: `https://pixabay.com/users/${obj.user}-${obj.user_id}/`};
+          // this.setState(() => {return {metadata: newMeta}})
           photos.push(hshh)
         })
         console.log("SUCCESS - Pixabay Api GET Request")
@@ -202,9 +214,15 @@ class App extends Component {
         console.log('FAIL - Pixabay Api GET Request')
         console.log(error)
       });
-    this.setState(() => {return { pics: photos}});
-
-   } //end of componentDidMount()
+    
+    //setting State for all available photos
+    //to be rendered by react-photo-gallery
+    // photos.forEach(p => {
+    //   p.metadata ={}
+    // })
+    this.setState({ pics: photos});
+    console.log(this.state.metadata);
+  }
 
 ///////////////////////////////////////////////////////
    onSortEnd = ({ oldIndex, newIndex }) => {
@@ -213,12 +231,25 @@ class App extends Component {
     });
   };
 ///////////////////////////////////////////////////////
+
   render() {
     return (
       <MuiThemeProvider theme={theme}>
         <Grid container direction="row" spacing={40}>
             <Grid item xs={12} >
               <TopNav />
+            </Grid>
+            <Grid item>
+            <form onSubmit={this.handleSubmit} >
+              <TextField
+                id="standard-search"
+                label="Search field"
+                type="search"
+                margin="normal"
+                onChange={(e) => this.state.query = e.target.value}
+              />
+              <Button color="secondary" href="#" size="small" variant="outlined" type="submit" onClick={this.handleSubmit}>Go</Button>
+          </form>
             </Grid>
             <Grid item >
             <SortableGallery
