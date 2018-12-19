@@ -283,7 +283,7 @@ class App extends Component {
               onSortEnd={this.onSortEnd}
             />
             <Grid item>
-            <Button color="secondary" href="#" size="small" variant="outlined" style={{width: 'fit-conent'}} onClick={this.handleSubmit}>Show More</Button>
+            {this.state.page === 0 ? null : <Button color="secondary" href="#" size="small" variant="contained" style={{width: 'fit-conent'}} onClick={this.handleSubmit}>Show More</Button>}
             </Grid>
               {/* <Gallery photos={this.state.pics} /> */}
               {/* <Grid container direction="row">
