@@ -24,6 +24,7 @@ import {
   arrayMove
 } from "react-sortable-hoc";
 import Photo from "./Photo";
+import SearchForm from './containers/SearchForm'
 
 
 const theme = createMuiTheme({
@@ -105,48 +106,51 @@ const SortableGallery = SortableContainer(({ photos}) => {
   return <Gallery photos={photos} columns={5} direction="row" ImageComponent={SortablePhoto} />;
 });
 
+let q = '';
+
+
 class App extends Component {
   state = {
     unsplash: [],
     pexels: [],
-    query: '',
     pics: [],
     pixabay: [],
     page: 0,
   }
 
 
+  handleSubmit = (event, query) => {
+    if(this.state.page === 0){
+      let next = this.state.page + 1
+      this.setState({ page: next})
+      this.getPictures(1, next, query);
+    }else{
+      let indx = this.state.pics.length + 1
+      let next = this.state.page + 1
+      this.setState({ page: next})
+      this.getPictures(indx, next, query);
+    }
+    event.preventDefault();
+  }
+
   componentDidMount() {
     
 
    } //end of componentDidMount()
 
-  handleSubmit = (event) => {
-    if(this.state.page === 0){
-      let photos = []
-      let next = this.state.page + 1
-      this.setState({ page: next})
-      this.getPictures(1, photos, next);
-    }else{
-      let indx = this.state.pics.length
-      let photos = this.state.pics
-      let next = this.state.page + 1
-      this.setState({ page: next})
-      this.getPictures(indx, photos, next);
-    }
-    event.preventDefault();
-  }
+ 
 
-  getPictures = (ind, photos, page) => {
+  getPictures = (ind, page, query) => {
     let initialIndex = ind;
+    let photos = this.state.pics;
      // alert('A name was submitted: ' + this.state.query);
     //setting temporary photos array to manipulate before adding to component state
-
+    q = !!(query) ? query : q;
     //A counter for the 'keys' of each image object to allow the state to tie 'metadata' to each image
     //TBD used to persist data to the Rails API backend database
-    console.log(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=${page}&query=${this.state.query}`)
+    console.log(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=${page}&query=${q}`)
     //UNSPLASH API GET REQUEST
-    axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=${page}&query=${this.state.query}`)
+    axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=${page}&query=${q}`)
     .then(response => {
       const unsplash = response.data.results
       // let unsplashMetadata
@@ -175,7 +179,7 @@ class App extends Component {
 
     // ///////////////////////////////////////////////////////
     // //PEXELS API GET REQUEST
-    axios.get(`https://api.pexels.com/v1/search?query=${this.state.query}+query&per_page=10&page=${page}`, {'headers': {'Authorization': process.env.REACT_APP_PEXELS_API_KEY}})
+    axios.get(`https://api.pexels.com/v1/search?query=${q}+query&per_page=10&page=${page}`, {'headers': {'Authorization': process.env.REACT_APP_PEXELS_API_KEY}})
       .then(resp => {
         const pexels = resp.data.photos
         this.setState(() => { return { pexels: pexels }})
@@ -203,7 +207,7 @@ class App extends Component {
 
     //   ///////////////////////////////////////////////////////
     //   //PIXABAY API GET REQUEST
-      axios.get(`https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${this.state.query}&per_page=10&page=${page}`)
+      axios.get(`https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${q}&per_page=10&page=${page}`)
       .then(resp => {
         console.log(resp)
         const pixabay = resp.data.hits
@@ -262,16 +266,7 @@ class App extends Component {
             <Grid item xs={12}  style={{marginTop: '50px'}}>
               <Grid container direction="row" alignItems="center">
                 <Grid item>
-                  <form onSubmit={this.handleSubmit} >
-                    <TextField
-                      id="standard-search"
-                      label="Search field"
-                      type="search"
-                      margin="normal"
-                      onChange={(e) => this.state.query = e.target.value}
-                    />
-                    <Button color="secondary" href="#" size="small" variant="outlined" type="submit" onClick={this.handleSubmit} style={{verticalAlign: 'bottom'}}>Go</Button>
-                  </form>
+                  <SearchForm page={this.state.page} index={this.state.pics.length} getPics={this.getPictures} handleSubmit={this.handleSubmit}/>
                 </Grid>
               </Grid>
             
