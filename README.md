@@ -7,13 +7,14 @@ In the project directory, you run:
 
 ## Requesting Required External API Keys
 
-In order to use this project you'll need to request API credentials from three external APIs:
-######Unsplash
+**In order to use this project you'll need to request API credentials from three external free stock photo APIs
+
+#####Unsplash
 * Follow the instructions to create an Unsplash account and [https://unsplash.com/documentation#creating-a-developer-account](Request Unsplash Developer Access Here)
 * Copy and save your 'Access Key' somewhere on your machine for later reference
 * The Unsplash Access Key will be stored in the `REACT_APP_UNSPLASH_ACCESS_KEY` environment variable
 
-######Pexels
+#####Pexels
 * Follow the instructions to create a Pexels account and [https://www.pexels.com/api/documentation/](Request Pexels Developer Access Here)
 * Copy and save 'Your API key' somewhere on your machine for later reference
 * The Pexels API Key will be stored in the `REACT_APP_PEXELS_API_KEY` environment variable
