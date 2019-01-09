@@ -7,7 +7,7 @@ In the project directory, you run:
 
 ## Requesting Required External API Keys
 
-** In order to use this project you'll need to request API credentials from three external free stock photo APIs
+**_In order to use this project you'll need to request API credentials from three external free stock photo APIs_**
 
 ###### Unsplash API
 * Follow the instructions to create an Unsplash account and [Request Unsplash Developer Access Here](https://unsplash.com/documentation#creating-a-developer-account)
