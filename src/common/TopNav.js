@@ -4,6 +4,7 @@ import { MuiThemeProvider,
         Toolbar, Typography,
         Grid } from '@material-ui/core';
 import { theme } from '../styles/theme'
+import logo from './multipicslogo.png'
 
   class TopNav extends Component {
     render() {
@@ -11,9 +12,10 @@ import { theme } from '../styles/theme'
       <MuiThemeProvider theme={theme}>
       <AppBar position="absolute" elevation={0} style={{color: theme.palette.primary.main}}>      
         <Toolbar>
-        <Grid justify="space-around" container spacing={24} alignItems="center">
-          <Typography variant="h4" gutterBottom={false} style={{color: theme.palette.primary.contrastText}}>
-            AllFreeStock
+        <Grid justify="flex-start" container spacing={24} alignItems="center">
+        <img src={logo} alt="Logo" style={{height: '70px', width: 'auto'}}/>
+          <Typography variant="h4" gutterBottom={false} style={{color: theme.palette.primary.contrastText}}>            
+            MultiPics
           </Typography>
           {/* <IconButton color="inherit" aria-label="Menu">
             <MenuIcon fontSize="large" style={{color: 'white'}}></MenuIcon>
@@ -25,10 +27,10 @@ import { theme } from '../styles/theme'
             News
           </Typography> */}
           
-          <Button color="secondary" variant="outlined">Search Now</Button>
 
           {/* <StyledButton color="secondary.main" style={{color: theme.palette.primary.contrastText}}>Login</StyledButton> */}
           </Grid>
+          <Button color="secondary" variant="outlined">Search</Button>
         </Toolbar>
       </AppBar>
       </MuiThemeProvider>
