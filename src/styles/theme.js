@@ -16,7 +16,7 @@ export const theme = createMuiTheme({
       primary: {
         light: 'rgb(229, 216, 255)',
         main: 'rgb(83, 110, 250)',
-        dark: '#210067',
+        dark: 'rgba(0,0,0,0.2)',
         contrastText: '#FFFFFF',
       },
       secondary: {
@@ -34,6 +34,9 @@ export const theme = createMuiTheme({
         default: '#210067'
       }
     },
+    // fab: {
+    //   color: 'rgba(0,0,0,0.2)',
+    // },
     // secondary: '#fc0',
     // typography:{
     //   useNextVariants: true,
