@@ -3,13 +3,14 @@ import Fab from '@material-ui/core/Fab'
 import CloudDownload from '@material-ui/icons/CloudDownload'
 import { BrowserRouter as Router, Link} from 'react-router-dom'
 import Metadata from "./components/Metadata";
+import { theme } from "./styles/theme";
 
 
 let isFocused = false;
 
 const Photo = ({ index, onClick, photo, margin, direction, top, left }) => {
   // console.log(photo)
-  const imgWithClick = { cursor: "pointer", border: 'solid' };
+  const imgWithClick = { cursor: "pointer" };
 
   const imgStyle = { margin: margin};
   if (direction === "column") {
@@ -38,16 +39,31 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left }) => {
     // isFocused = true;
   }
 
-  const onDrag = (e) => {
+  const handleDrag = (e) => {
     e.stopPropagation();
-    e.target.style.border = "solid";
+    e.target.style.boxShadow = "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)";
+    e.target.style.border = `solid ${theme.palette.secondary.main}`;
   }
 
-  const onDrop = (e) => {
-    debugger;
+  const handleDrop = (e) => {
+    // debugger;
+    e.stopPropagation();
     e.target.style.border = "none";
+    // debugger;
+    // e.target.style.boxShadow = "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)";
+
   }
 
+  const handleUp = (e) => {
+    // debugger;
+    e.stopPropagation();
+    e.target.style.boxShadow = "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)";
+  }
+
+  const handleHover = (e) => {
+    e.stopPropagation();
+    e.target.style.boxShadow = "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)";
+  }
   
 
   const handleExit = () => {
@@ -55,35 +71,21 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left }) => {
   }
 
   return (    
-    <div onMouseDown={onDrag} onMouseLeave={onDrop}>
+    <div onMouseDown={handleDrag} onMouseLeave={handleDrop} style={{transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)'}}>
       <img
-        style={onClick ? { ...imgStyle, ...imgWithClick} : imgStyle}
+        style={onClick ? { ...imgStyle, ...imgWithClick} : {...imgStyle, boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'}}
         {...photo}
         alt="img"
-        onClick={handleClick}
-        
+        onMouseOver={handleHover}
+        onMouseOut={handleUp}
       />
-      <Fab aria-label="Download" href={photo.metadata.download} rel="noopener noreferrer" target="_blank" size="small" style={{position: 'absolute', marginLeft: '-44px', backgroundColor: 'rgba(0,0,0,0.2)', marginTop: '4px'}} >
+      <Fab aria-label="Download" href={photo.metadata.download} rel="noopener noreferrer" target="_blank" size="small" style={{position: 'relative', marginLeft: '-44px', backgroundColor: 'rgba(0,0,0,0.2)', marginTop: '-420px'}} onMouseDown={e => e.stopPropagation()}>
         <CloudDownload style={{color: '#ffffff'}}/>
       </Fab>
       <div style={{position: 'relative', top: '-15px', margin: '0px'}} onMouseDown={e => e.stopPropagation()}>
-        {/* <a onClick={()=> window.open(photo.metadata.profile)}>{photo.metadata.photographer}</a> */}
-        {/* <Router>
-          <Link to='https://google.com' params={'https://www.google.com'} target="_blank" onClick={e => e.stopPropagation()}>click me</Link>
-        </Router> */}
-        {/* <a onClick={function(e){e.stopPropagation(); window.open(photo.metadata.profile);}}>{photo.metadata.photographer}</a> */}
-        {/* <a rel="noopener noreferrer" href={photo.metadata.profile} target="_blank" onClick={e => e.stopPropagation()}>{photo.metadata.photographer}</a> */}
-        {/* <Router>
-          <Link to={photo.metadata.profile} target="_blank">{photo.metadata.photographer}</Link>
-        </Router> */}
-        {/* <Router>
-          {/* <Link to={photo.metadata.profile} target="_blank" style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'left', paddingLeft: '8px'}} onClick={(event) => {event.preventDefault(); window.open(this.makeHref(photo.metadata.profile));}}>{photo.metadata.photographer}</Link> */}
-        {/* </Router> */}
           <a style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'left', paddingLeft: '8px'}} href={photo.metadata.profile} target="_blank" rel="noopener noreferrer" >{photo.metadata.photographer}</a>
           <a href={photo.metadata.link} target="_blank" rel="noopener noreferrer" style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'right', paddingRight: '8px'}}>{photo.metadata.brand}</a>
         </div>
-      {/* <div onClick={handleProfileClick}>Thing</div> */}
-      {/* <Metadata photo={this.photo.metadata} /> */}
     </div>
   );
 };
