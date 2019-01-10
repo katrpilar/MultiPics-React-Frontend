@@ -1,10 +1,13 @@
 import React from "react";
 import Fab from '@material-ui/core/Fab'
 import CloudDownload from '@material-ui/icons/CloudDownload'
+import Close from '@material-ui/icons/Close'
+
 import { BrowserRouter as Router, Link} from 'react-router-dom'
 import Metadata from "./components/Metadata";
 import { theme } from "./styles/theme";
 import { withStyles } from '@material-ui/core/styles';
+import { Grid } from "@material-ui/core";
 // import classes from "*.module.css";
 
 const styles = {
@@ -65,31 +68,38 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes })
     e.target.style.display = 'none';
   }
 
-  const btnHover = (e) => {
-    // debugger;
-    // e.stopPropagation();
-    e.target.style.backgroundColor = `${theme.palette.secondary.main}`
-  }
-
   return (    
     <div onMouseDown={handleDrag} onMouseLeave={handleDrop} style={{transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)'}}>
-      <img
-        style={onClick ? { ...imgStyle, ...imgWithClick} : {...imgStyle, boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'}}
-        {...photo}
-        alt="img"
-        onMouseOver={handleHover}
-        onMouseOut={handleUp}
-      />
-        <Fab aria-label="Download" href={photo.metadata.download} rel="noopener noreferrer" target="_blank" size="small" style={{position: 'relative', marginLeft: '-44px',  marginTop: '-420px'}} onMouseDown={e => e.stopPropagation()}
-        className={classes.Fab}
-        >
-          <CloudDownload style={{color: '#ffffff'}}/>
-        </Fab>
-        <div style={{position: 'relative', top: '-15px', margin: '0px'}} onMouseDown={e => e.stopPropagation()}>
-            <a style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'left', paddingLeft: '8px'}} href={photo.metadata.profile} target="_blank" rel="noopener noreferrer" >{photo.metadata.photographer}</a>
-            <a href={photo.metadata.link} target="_blank" rel="noopener noreferrer" style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'right', paddingRight: '8px'}}>{photo.metadata.brand}</a>
-          </div>
-
+      
+      <Grid container direction="row" >
+        <Grid item style={{marginRight: '-80px'}}>
+        <img
+          style={onClick ? { ...imgStyle, ...imgWithClick} : {...imgStyle, boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'}}
+          {...photo}
+          alt="img"
+          onMouseOver={handleHover}
+          onMouseOut={handleUp}
+        />
+            <Fab aria-label="Hide" size="small" onMouseDown={e => e.stopPropagation()}
+            className={classes.Fab} style={{position: 'relative', top: '-205px', left: '-343px'}}
+            >
+              <Close style={{color: '#ffffff'}}/>
+            </Fab>
+          <Fab aria-label="Download" href={photo.metadata.download} rel="noopener noreferrer" target="_blank" size="small" style={{position: 'relative', top: '-205px', right: '90px'}} onMouseDown={e => e.stopPropagation()}
+            className={classes.Fab}
+            >
+              <CloudDownload style={{color: '#ffffff'}}/>
+            </Fab>
+        </Grid>
+      </Grid>
+      <Grid container direction="row">
+        <Grid item>
+          <div style={{position: 'relative', top: '-15px', margin: '0px'}} onMouseDown={e => e.stopPropagation()}>
+              <a style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'left',marginLeft: '80px'}} href={photo.metadata.profile} target="_blank" rel="noopener noreferrer" >{photo.metadata.photographer}</a>
+              <a href={photo.metadata.link} target="_blank" rel="noopener noreferrer" style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'right', marginRight: '80px'}}>{photo.metadata.brand}</a>
+            </div>
+        </Grid>
+      </Grid>
     </div>
   );
 };
