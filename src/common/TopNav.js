@@ -10,11 +10,11 @@ import logo from './multipicslogo.png'
     render() {
     return (          
       <MuiThemeProvider theme={theme}>
-      <AppBar position="absolute" elevation={0} style={{color: theme.palette.primary.main}}>      
+      <AppBar position="absolute" elevation={0} style={{background: "#f3f3f3"}}>      
         <Toolbar>
         <Grid justify="flex-start" container spacing={24} alignItems="center">
         <img src={logo} alt="Logo" style={{height: '70px', width: 'auto'}}/>
-          <Typography variant="h4" gutterBottom={false} style={{color: theme.palette.primary.contrastText}}>            
+          <Typography variant="h4" gutterBottom={false} style={{color: theme.palette.primary.main}}>            
             MultiPics
           </Typography>
           {/* <IconButton color="inherit" aria-label="Menu">

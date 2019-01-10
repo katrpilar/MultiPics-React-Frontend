@@ -17,6 +17,7 @@ import { theme } from './styles/theme'
 
 
 const SortablePhoto = SortableElement(Photo);
+// const pressThreshold = 100;
 const SortableGallery = SortableContainer(({ photos}) => {
   return <Gallery photos={photos} columns={5} direction="row" ImageComponent={SortablePhoto} />;
 });
@@ -53,6 +54,20 @@ class App extends Component {
     });
   };
 ///////////////////////////////////////////////////////
+  onMove = ({node, index, collection}, event) =>{
+    // event.target.style.border = "solid"
+    // debugger;
+    node.firstElementChild.style.border = 'solid';
+    // console.log(node);
+    // console.log(event);
+
+    // console.log(event.target.style);
+    // .push({border: 'solid'});
+  }
+
+  // onStop = ({oldIndex, newIndex, collection}, e) => {
+  //   debugger;
+  // }
 
   render() {
     return (
@@ -75,6 +90,9 @@ class App extends Component {
               axis={"xy"}
               photos={this.state.pics}
               onSortEnd={this.onSortEnd}
+              pressDelay={100}
+              onSortStart={this.onMove}
+
             />
             <Grid item>
             {this.state.page === 0 ? null : <Button color="secondary" href="#" size="small" variant="contained" style={{width: 'fit-conent'}} onClick={this.handleSubmit}>Show More</Button>}
