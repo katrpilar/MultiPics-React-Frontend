@@ -59,6 +59,7 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes })
 
   const handleHover = (e) => {
     e.stopPropagation();
+    e.target.style.transition = 'all 0.6s cubic-bezier(.25,.8,.25,1)';
     e.target.style.boxShadow = "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)";
   }
   
@@ -74,8 +75,21 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes })
     // e.target.style.display = 'none';
   }
 
+  const metaMouse = (e) => {
+    e.target.style.backgroundColor = `${theme.palette.secondary.main}`;
+    e.target.style.color = "white";
+    e.target.style.transform = `scale(1.1)`;
+    e.target.style.transition = 'all 0.4s cubic-bezier(.25,.8,.25,1)';
+  }
+
+  const outMetaMouse = (e) => {
+    e.target.style.backgroundColor = 'rgb(255, 255, 255, 0.3)';
+    e.target.style.color = 'rgb(0, 0, 0, 0.5)';
+    e.target.style.transform = `scale(1)`;
+  }
+
   return (    
-    <div onMouseDown={handleDrag} onMouseLeave={handleDrop} style={{transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)'}}>
+    <div onMouseDown={handleDrag} onMouseLeave={handleDrop} style={{transition: 'all 0.5s cubic-bezier(.25,.8,.25,1)'}}>
       
       <Grid container direction="row">
         <Grid item >
@@ -103,10 +117,10 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes })
       </Grid>
       <Grid container direction="row">
         <Grid item>
-          <div style={{position: 'relative', top: '-31px', margin: '0px', paddingLeft:'5px'}} onMouseDown={e => e.stopPropagation()}>
-              <a style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'left'}} href={photo.metadata.profile} target="_blank" rel="noopener noreferrer" >{photo.metadata.photographer} - </a>
-  
-              <a href={photo.metadata.link} target="_blank" rel="noopener noreferrer" style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'right'}}>- {photo.metadata.brand}</a>
+          <div style={{position: 'relative', top: '-18px', margin: '0px', paddingLeft:'4px'}} onMouseDown={e => e.stopPropagation()}>
+              <a style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'left'}} href={photo.metadata.profile} target="_blank" rel="noopener noreferrer" onMouseOver={metaMouse}  onMouseOut={outMetaMouse}>{photo.metadata.photographer} -</a>
+              &nbsp;
+              <a href={photo.metadata.link} target="_blank" rel="noopener noreferrer" style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'left'}} onMouseOver={metaMouse} onMouseOut={outMetaMouse}> &nbsp;{photo.metadata.brand}</a>
             </div>
         </Grid>
       </Grid>
