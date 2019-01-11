@@ -15,11 +15,14 @@ import Results from './containers/Results'
 import { getPictures } from './requests/getPhotos'
 import { theme } from './styles/theme'
 
+// const hideElm = (e) => {
+
+// };
 
 const SortablePhoto = SortableElement(Photo);
 // const pressThreshold = 100;
-const SortableGallery = SortableContainer(({ photos}) => {
-  return <Gallery photos={photos} columns={5} direction="row" ImageComponent={SortablePhoto} />;
+const SortableGallery = SortableContainer(({ photos, hidden }) => {
+  return <Gallery photos={photos} columns={5} direction="row" ImageComponent={SortablePhoto} hideStatus={hidden} />;
 });
 
 // let q = '';
@@ -93,7 +96,7 @@ class App extends Component {
               onSortEnd={this.onSortEnd}
               pressDelay={100}
               // onSortStart={this.onMove}
-
+              hidden={false}
             />
             <Grid item>
             {this.state.page === 0 ? null : <Button color="secondary" href="#" size="small" variant="contained" style={{width: 'fit-conent'}} onClick={this.handleSubmit}>Show More</Button>}

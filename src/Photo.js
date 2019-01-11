@@ -19,10 +19,16 @@ const styles = {
   }
 };
 
-const Photo = ({ index, onClick, photo, margin, direction, top, left, classes }) => {
+const Photo = ({ index, onClick, photo, margin, direction, top, left, classes, isClosed, hideStatus, hidden }) => {
   // console.log(photo)
-  const imgWithClick = { cursor: "pointer" };
 
+  const [visible, setVisible] = React.useState(true);
+  // console.log(photo);
+  React.useEffect(() => {
+    !visible ? console.log(this) : console.log('nothing'); 
+  });
+
+  const imgWithClick = { cursor: "pointer" };
   const imgStyle = { margin: margin};
   if (direction === "column") {
     imgStyle.position = "absolute";
@@ -63,13 +69,18 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes })
     e.target.style.boxShadow = "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)";
   }
   
-  const hideMeta = (e) => {
+  const hidePhoto = (e) => {
+    setVisible(false);
     // debugger;
-    e.preventDefault();
-    e.stopPropagation();
-    console.log(e.target.parentElement.parentElement.parentElement.parentElement.parentElement);
-    e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.remove();
-    e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+    // console.log(this);
+    // console.log(this.props.photos[index]);
+    // this.props.photos[index].hideStatus(true);
+    // debugger;
+    // e.preventDefault();
+    // e.stopPropagation();
+    // console.log(e.target.parentElement.parentElement.parentElement.parentElement.parentElement);
+    // e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.remove();
+    // e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
     // debugger;
     // e.target.parentElement.parentElement.parentElement.parentElement.siblingElement.remove();
     // e.target.style.display = 'none';
@@ -88,7 +99,9 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes })
     e.target.style.transform = `scale(1)`;
   }
 
-  return (    
+  return (
+    <div>
+    {visible ? 
     <div onMouseDown={handleDrag} onMouseLeave={handleDrop} style={{transition: 'all 0.5s cubic-bezier(.25,.8,.25,1)'}}>
       
       <Grid container direction="row">
@@ -102,7 +115,7 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes })
           onMouseOut={handleUp}
         />
        
-            <Fab aria-label="Hide" size="small" onMouseDown={e => e.stopPropagation()} onClick={hideMeta}
+            <Fab aria-label="Hide" size="small" onMouseDown={e => e.stopPropagation()} onClick={hidePhoto}
             className={classes.Fab} style={{float: 'left', position: 'absolute', zIndex: '1000', display: 'inline-flex', left: '0px' }}
             >
               <Close style={{color: '#ffffff'}}/>
@@ -123,7 +136,10 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes })
               <a href={photo.metadata.link} target="_blank" rel="noopener noreferrer" style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'left'}} onMouseOver={metaMouse} onMouseOut={outMetaMouse}> &nbsp;{photo.metadata.brand}</a>
             </div>
         </Grid>
-      </Grid>
+      </Grid> 
+      
+    </div>
+    : null }
     </div>
   );
 };
