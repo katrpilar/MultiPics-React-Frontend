@@ -64,15 +64,21 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes })
   
   const hideMeta = (e) => {
     // debugger;
+    e.preventDefault();
     e.stopPropagation();
-    e.target.style.display = 'none';
+    console.log(e.target.parentElement.parentElement.parentElement.parentElement.parentElement);
+    e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.remove();
+    e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+    // debugger;
+    // e.target.parentElement.parentElement.parentElement.parentElement.siblingElement.remove();
+    // e.target.style.display = 'none';
   }
 
   return (    
     <div onMouseDown={handleDrag} onMouseLeave={handleDrop} style={{transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)'}}>
       
-      <Grid container direction="row" >
-        <Grid item style={{marginRight: '-80px'}}>
+      <Grid container direction="row">
+        <Grid item style={{marginRight: '-80px'}} >
         <img
           style={onClick ? { ...imgStyle, ...imgWithClick} : {...imgStyle, boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'}}
           {...photo}
@@ -80,7 +86,7 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes })
           onMouseOver={handleHover}
           onMouseOut={handleUp}
         />
-            <Fab aria-label="Hide" size="small" onMouseDown={e => e.stopPropagation()}
+            <Fab aria-label="Hide" size="small" onMouseDown={e => e.stopPropagation()} onClick={hideMeta}
             className={classes.Fab} style={{position: 'relative', top: '-205px', left: '-343px'}}
             >
               <Close style={{color: '#ffffff'}}/>
@@ -94,9 +100,10 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes })
       </Grid>
       <Grid container direction="row">
         <Grid item>
-          <div style={{position: 'relative', top: '-15px', margin: '0px'}} onMouseDown={e => e.stopPropagation()}>
-              <a style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'left',marginLeft: '80px'}} href={photo.metadata.profile} target="_blank" rel="noopener noreferrer" >{photo.metadata.photographer}</a>
-              <a href={photo.metadata.link} target="_blank" rel="noopener noreferrer" style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'right', marginRight: '80px'}}>{photo.metadata.brand}</a>
+          <div style={{position: 'relative', top: '-31px', margin: '0px', paddingLeft:'5px'}} onMouseDown={e => e.stopPropagation()}>
+              <a style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'left'}} href={photo.metadata.profile} target="_blank" rel="noopener noreferrer" >{photo.metadata.photographer} - </a>
+  
+              <a href={photo.metadata.link} target="_blank" rel="noopener noreferrer" style={{fontSize: '10px', textDecoration: 'none', color: 'rgb(0, 0, 0, 0.5)', backgroundColor: 'rgb(255, 255, 255, 0.3)', float: 'right'}}>- {photo.metadata.brand}</a>
             </div>
         </Grid>
       </Grid>
