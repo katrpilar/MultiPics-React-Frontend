@@ -32,6 +32,7 @@ class App extends Component {
   }
 
   handleSubmit = (event, query) => {
+    query = query.split(' ').join('+');
     if(this.state.page === 0){
       let next = this.state.page + 1
       this.setState({ page: next})
