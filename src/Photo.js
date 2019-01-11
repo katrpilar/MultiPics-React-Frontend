@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Link} from 'react-router-dom'
 import Metadata from "./components/Metadata";
 import { theme } from "./styles/theme";
 import { withStyles } from '@material-ui/core/styles';
-import { Grid } from "@material-ui/core";
+import { Grid, AppBar, Toolbar } from "@material-ui/core";
 // import classes from "*.module.css";
 
 const styles = {
@@ -78,7 +78,8 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes })
     <div onMouseDown={handleDrag} onMouseLeave={handleDrop} style={{transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)'}}>
       
       <Grid container direction="row">
-        <Grid item style={{marginRight: '-80px'}} >
+        <Grid item >
+        <div style={{position: 'relative'}}>
         <img
           style={onClick ? { ...imgStyle, ...imgWithClick} : {...imgStyle, boxShadow: '0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)'}}
           {...photo}
@@ -86,16 +87,18 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes })
           onMouseOver={handleHover}
           onMouseOut={handleUp}
         />
+       
             <Fab aria-label="Hide" size="small" onMouseDown={e => e.stopPropagation()} onClick={hideMeta}
-            className={classes.Fab} style={{position: 'relative', top: '-205px', left: '-343px'}}
+            className={classes.Fab} style={{float: 'left', position: 'absolute', zIndex: '1000' }}
             >
               <Close style={{color: '#ffffff'}}/>
             </Fab>
-          <Fab aria-label="Download" href={photo.metadata.download} rel="noopener noreferrer" target="_blank" size="small" style={{position: 'relative', top: '-205px', right: '90px'}} onMouseDown={e => e.stopPropagation()}
+          <Fab aria-label="Download" href={photo.metadata.download} rel="noopener noreferrer" target="_blank" size="small" style={{float: 'left', position: 'absolute', zIndex: '1000'}} onMouseDown={e => e.stopPropagation()}
             className={classes.Fab}
             >
               <CloudDownload style={{color: '#ffffff'}}/>
             </Fab>
+            </div>
         </Grid>
       </Grid>
       <Grid container direction="row">

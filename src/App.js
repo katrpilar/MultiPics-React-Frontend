@@ -91,7 +91,7 @@ class App extends Component {
               photos={this.state.pics}
               onSortEnd={this.onSortEnd}
               pressDelay={100}
-              onSortStart={this.onMove}
+              // onSortStart={this.onMove}
 
             />
             <Grid item>
