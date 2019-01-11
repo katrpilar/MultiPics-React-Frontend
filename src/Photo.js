@@ -89,11 +89,11 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes })
         />
        
             <Fab aria-label="Hide" size="small" onMouseDown={e => e.stopPropagation()} onClick={hideMeta}
-            className={classes.Fab} style={{float: 'left', position: 'absolute', zIndex: '1000' }}
+            className={classes.Fab} style={{float: 'left', position: 'absolute', zIndex: '1000', display: 'inline-flex', left: '0px' }}
             >
               <Close style={{color: '#ffffff'}}/>
             </Fab>
-          <Fab aria-label="Download" href={photo.metadata.download} rel="noopener noreferrer" target="_blank" size="small" style={{float: 'left', position: 'absolute', zIndex: '1000'}} onMouseDown={e => e.stopPropagation()}
+          <Fab aria-label="Download" href={photo.metadata.download} rel="noopener noreferrer" target="_blank" size="small" style={{float: 'left', position: 'absolute', zIndex: '1000', display: 'inline-flex', right: '0px'}} onMouseDown={e => e.stopPropagation()}
             className={classes.Fab}
             >
               <CloudDownload style={{color: '#ffffff'}}/>
