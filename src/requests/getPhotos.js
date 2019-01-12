@@ -20,7 +20,7 @@ export const getPictures = (ind, page, query, photos) => {
       unsplash.map((obj, indx) => {
         initialIndex++
         let hsh = {}
-        hsh.src = obj.urls.thumb
+        hsh.src = obj.urls.small
         hsh.width = obj.width
         hsh.height = obj.height
         hsh.key = initialIndex.toString()
@@ -46,13 +46,13 @@ export const getPictures = (ind, page, query, photos) => {
         const pexels = resp.data.photos
         // this.setState(() => { return { pexels: pexels }})
         pexels.map((obj, indx) => {
-          initialIndex++
-          let hshh = {}
-          hshh.src = obj.src.tiny
-          hshh.width = obj.width
-          hshh.height = obj.height
-          hshh.key = initialIndex
-          hshh.id = initialIndex.toString()
+          initialIndex++;
+          let hshh = {};
+          hshh.src = obj.src.medium;
+          hshh.width = obj.width;
+          hshh.height = obj.height;
+          hshh.key = initialIndex;
+          hshh.id = initialIndex.toString();
           hshh.metadata = {download: obj.src.original, brand: 'Pexels', link: 'https://www.pexels.com/', photographer: obj.photographer, profile: obj.photographer_url};
           //Set Pexels image's state metadata
           // let newMeta = this.state.metadata
@@ -60,11 +60,11 @@ export const getPictures = (ind, page, query, photos) => {
           // this.setState(() => {return {metadata: newMeta}})
           return photos.push(hshh);
         })
-        console.log("SUCCESS - Pexels Api GET Request")
+        console.log("SUCCESS - Pexels Api GET Request");
       })
       .catch(function (error) {
-        console.log('FAIL - Pexels Api GET Request')
-        console.log(error)
+        console.log('FAIL - Pexels Api GET Request');
+        console.log(error);
       });
 
     //   ///////////////////////////////////////////////////////
@@ -77,10 +77,10 @@ export const getPictures = (ind, page, query, photos) => {
         pixabay.map((obj, indx) => {
           initialIndex++
           let hshh = {}
-          hshh.src = obj.webformatURL
-          hshh.width = obj.webformatWidth - 300
-          hshh.height = obj.webformatHeight - 200
-          hshh.key = initialIndex.toString()
+          hshh.src = obj.webformatURL;
+          hshh.width = obj.webformatWidth;
+          hshh.height = obj.webformatHeight;
+          hshh.key = initialIndex.toString();
           hshh.metadata = {download: obj.largeImageURL, brand: 'Pixabay', link: 'https://www.pixabay.com/', photographer: obj.user, profile: `https://pixabay.com/users/${obj.user}-${obj.user_id}/`};
           //Set Pixabay image's state metadata
           // let newMeta = this.state.metadata

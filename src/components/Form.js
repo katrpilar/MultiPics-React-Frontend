@@ -12,7 +12,7 @@ class Form extends Component{
                     margin="normal"
                     onChange={(e) => this.props.handleChange(e)}
                 />
-                <Button color="secondary" href="#" size="small" variant="outlined" type="submit" onClick={(e) => this.props.handleSubmit(e, this.props.query)} style={{verticalAlign: 'bottom'}}>Go</Button>
+                <Button color="secondary" href="#" size="small" variant="outlined" type="submit" onClick={(e) => this.props.handleSubmit(e, this.props.query)} style={{verticalAlign: 'bottom'}}>Search</Button>
             </form>
         )
     }

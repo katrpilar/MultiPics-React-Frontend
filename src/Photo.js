@@ -24,9 +24,9 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes, i
 
   const [visible, setVisible] = React.useState(true);
   // console.log(photo);
-  React.useEffect(() => {
-    !visible ? console.log(this) : console.log('nothing'); 
-  });
+  // React.useEffect(() => {
+  //   !visible ? console.log(this) : console.log('nothing'); 
+  // });
 
   const imgWithClick = { cursor: "pointer" };
   const imgStyle = { margin: margin};
@@ -113,7 +113,9 @@ const Photo = ({ index, onClick, photo, margin, direction, top, left, classes, i
           alt="img"
           onMouseOver={handleHover}
           onMouseOut={handleUp}
-        />
+         
+        /> 
+        {/* sizes="(max-width: 36em) calc(.333 * (100vw - 12em)), 100vw" */}
        
             <Fab aria-label="Hide" size="small" onMouseDown={e => e.stopPropagation()} onClick={hidePhoto}
             className={classes.Fab} style={{float: 'left', position: 'absolute', zIndex: '1000', display: 'inline-flex', left: '0px' }}
