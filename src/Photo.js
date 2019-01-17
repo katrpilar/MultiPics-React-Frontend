@@ -119,27 +119,56 @@ const Photo = ({
   const handleDownload = e => {
     console.log(photo)
     window.open(photo.metadata.download, "_blank")
-    axios.post( 'http://localhost:3001/api/images', { image: {link: photo.metadata.link, brand: photo.metadata.brand, photographer: photo.metadata.photographer, profile: photo.metadata.profile, download_count: 1, download: photo.metadata.download} })
+    axios.get(`/api/images?search=${photo.metadata.download}`)
     .then(response => {
-        return console.log(response)
-        // const lists = [ ...this.state.lists, response.data ]
-        // this.setState({lists})
-    })
-    .catch(error => {
-        console.log(error)
-    })
-
-    //TESTING RAILS API
-    axios.get(`http://localhost:3001/api/images`)
-    .then(response => {
-      const images = response.data;
-      console.log(images);      
-      console.log("SUCCESS - Rails Api GET Request")
+      //IF found the photo in the database
+      console.log("SUCCESS - Rails Api GET Request Fetched A Single Image")
+      const image = response.data;
+      const id = response.data.id;
+      const downloads = response.data.download_count + 1;
+      console.log(image);
+      axios.put( `/api/images/${id}`, { image: { download_count: downloads} })
+      .then(response => {
+          //TESTING RAILS API
+          console.log('SUCCESS - PERSISTED NEW PHOTO TO Rails Api via PUT Request')
+          return console.log(response)
+          // const lists = [ ...this.state.lists, response.data ]
+          // this.setState({lists})
+      })
+      .catch(error => {
+          console.log(error)
+      })      
     })
     .catch(function (errors) {
-      console.log('FAIL - Rails Api GET Request')
-      console.log(errors)
+      //IF don't find the photo already in the database
+      // console.log('FAIL - Rails Api GET Request')
+      // console.log(errors)
+      axios.post( '/api/images', { image: {link: photo.metadata.link, brand: photo.metadata.brand, photographer: photo.metadata.photographer, profile: photo.metadata.profile, download_count: 1, download: photo.metadata.download} })
+      .then(response => {
+          //TESTING RAILS API
+          console.log('SUCCESS - PERSISTED NEW PHOTO TO Rails Api via PUT Request')
+          return console.log(response)
+          // const lists = [ ...this.state.lists, response.data ]
+          // this.setState({lists})
+      })
+      .catch(error => {
+          console.log(error)
+      })
     });
+    
+  
+
+    // //TESTING RAILS API
+    // axios.get(`http://localhost:3001/api/images`)
+    // .then(response => {
+    //   const images = response.data;
+    //   console.log(images);      
+    //   console.log("SUCCESS - Rails Api GET Request")
+    // })
+    // .catch(function (errors) {
+    //   console.log('FAIL - Rails Api GET Request')
+    //   console.log(errors)
+    // });
     // e.preventDefault();
     // e.stopPropagation();
   //   // Get the photo url from the clicked parent element
