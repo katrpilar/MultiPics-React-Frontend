@@ -38,6 +38,10 @@ class App extends Component {
     query: '',
   }
 
+  // componentDidUpdate = () => {
+     
+  // }
+
   handleSubmit = (event, query) => {
     query ? this.setState({query: query.split(' ').join('+')}) : query = this.state.query;
     // query ? query = query.split(' ').join('+') : query = this.state.query;

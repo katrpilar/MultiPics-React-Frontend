@@ -101,9 +101,13 @@ export const getPictures = (ind, page, query, photos) => {
     // photos.forEach(p => {
     //   p.metadata ={}
     // })
+
+
     return ({pics: photos});
     // this.setState({ pics: photos});
     // console.log(this.state.metadata);
+
+    
   }
 
   export default getPictures;

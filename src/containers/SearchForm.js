@@ -24,9 +24,9 @@ class SearchForm extends Component{
      
     render(){
         return(
-            <Transition in={this.state.in} timeout={5000}>
+            // <Transition in={this.state.in} timeout={5000}>
                 <Form handleSubmit={this.props.handleSubmit} query={this.state.query} handleChange={this.handleChange}/>
-            </Transition>
+            // </Transition>
             )
     }
 }
