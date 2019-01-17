@@ -5,7 +5,7 @@ import Close from "@material-ui/icons/Close";
 
 // import { BrowserRouter as Router, Link} from 'react-router-dom'
 // import Metadata from "./components/Metadata";
-import { theme } from "./styles/theme";
+import { theme } from "../styles/theme";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, AppBar, Toolbar } from "@material-ui/core";
 // import classes from "*.module.css";
@@ -38,6 +38,7 @@ const Photo = ({
   // console.log(photo)
 
   const [visible, setVisible] = React.useState(true);
+  
   // console.log(photo);
   // React.useEffect(() => {
   //   !visible ? console.log(this) : console.log('nothing');
@@ -141,6 +142,8 @@ const Photo = ({
         axios.put( `/api/images/${id}`, { image: { download_count: downloads} })
         .then(response => {
             console.log('SUCCESS - UPDATED image download_count via Rails Api PUT Request')
+            // document.body.append(downloads)
+            // e.target.append(downloads)
             return console.log(response);
         })
         .catch(error => {

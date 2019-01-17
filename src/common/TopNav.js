@@ -5,11 +5,15 @@ import { MuiThemeProvider,
         Grid } from '@material-ui/core';
 import { theme } from '../styles/theme'
 import logo from './multipicslogo.png'
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+// import App from '../App';
+
 
   class TopNav extends Component {
     render() {
     return (          
       <MuiThemeProvider theme={theme}>
+      <Router>
       <AppBar position="absolute" elevation={0} style={{background: "#f3f3f3"}}>      
         <Toolbar>
         <Grid justify="flex-start" container spacing={24} alignItems="center">
@@ -26,13 +30,20 @@ import logo from './multipicslogo.png'
           <Typography variant="h6" style={{color: theme.palette.primary.contrastText}}>
             News
           </Typography> */}
+          {/* <Typography variant="h6" gutterBottom={false} style={{color: theme.palette.primary.main}}>
+            <Link to="/search">Search</Link>            
+          </Typography> */}
           
 
           {/* <StyledButton color="secondary.main" style={{color: theme.palette.primary.contrastText}}>Login</StyledButton> */}
           </Grid>
-          <Button color="secondary" variant="outlined">Search</Button>
+          {/* <Button color="secondary" variant="outlined">
+            <Link to="/popular">Search</Link>            
+          </Button> */}
         </Toolbar>
+        {/* <Route path="/search" component={App} /> */}
       </AppBar>
+      </Router>
       </MuiThemeProvider>
     );
   }}
