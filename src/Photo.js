@@ -124,36 +124,37 @@ const Photo = ({
       //IF found the photo in the database
       console.log("SUCCESS - Rails Api GET Request Fetched A Single Image")
       const image = response.data;
-      const id = response.data.id;
-      const downloads = response.data.download_count + 1;
+      
       console.log(image);
-      axios.put( `/api/images/${id}`, { image: { download_count: downloads} })
-      .then(response => {
-          //TESTING RAILS API
-          console.log('SUCCESS - PERSISTED NEW PHOTO TO Rails Api via PUT Request')
-          return console.log(response)
-          // const lists = [ ...this.state.lists, response.data ]
-          // this.setState({lists})
-      })
-      .catch(error => {
-          console.log(error)
-      })      
+      if(image.message == "not found"){ //if don't find image save new one to DB
+        axios.post( '/api/images', { image: {link: photo.metadata.link, brand: photo.metadata.brand, photographer: photo.metadata.photographer, profile: photo.metadata.profile, download_count: 1, download: photo.metadata.download} })
+        .then(response => {
+            console.log('SUCCESS - PERSISTED NEW PHOTO TO Rails Api via PUT Request')
+            return console.log(response)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+      }else if (image[0].download_count > 0){ //if do find image increment the download_count
+        const id = image[0].id;
+        const downloads = image[0].download_count + 1;
+        axios.put( `/api/images/${id}`, { image: { download_count: downloads} })
+        .then(response => {
+            console.log('SUCCESS - UPDATED image download_count via Rails Api PUT Request')
+            return console.log(response);
+        })
+        .catch(error => {
+            console.log('FAILED - to UPDATE image download_count via Rails Api PUT Request')
+            console.log(error)
+        })  
+      }else{
+        console.log('FAILED - API reponse Did not do anything');
+      }          
     })
     .catch(function (errors) {
       //IF don't find the photo already in the database
-      // console.log('FAIL - Rails Api GET Request')
-      // console.log(errors)
-      axios.post( '/api/images', { image: {link: photo.metadata.link, brand: photo.metadata.brand, photographer: photo.metadata.photographer, profile: photo.metadata.profile, download_count: 1, download: photo.metadata.download} })
-      .then(response => {
-          //TESTING RAILS API
-          console.log('SUCCESS - PERSISTED NEW PHOTO TO Rails Api via PUT Request')
-          return console.log(response)
-          // const lists = [ ...this.state.lists, response.data ]
-          // this.setState({lists})
-      })
-      .catch(error => {
-          console.log(error)
-      })
+      console.log('FAIL - Initial Rails Api GET Request')
+      console.log(errors)
     });
     
   
