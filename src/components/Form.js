@@ -1,5 +1,6 @@
 import { TextField, Button } from '@material-ui/core'
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 
 class Form extends Component{
     render(){
@@ -18,4 +19,9 @@ class Form extends Component{
     }
 } 
 
-export default Form;
+function mapStateToProps(state) {
+    return { query: state.query };
+  }
+  
+
+export default connect(mapStateToProps)(Form);

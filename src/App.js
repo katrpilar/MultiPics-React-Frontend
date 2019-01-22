@@ -9,13 +9,14 @@ import { SortableContainer,
   SortableElement,
   arrayMove
 } from "react-sortable-hoc";
-import Photo from "./Photo";
+import Photo from "./containers/Photo";
 import SearchForm from './containers/SearchForm'
-import Results from './containers/Results'
 import { getPictures } from './requests/getPhotos'
 import { theme } from './styles/theme'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import { CSSTransition } from "react-transition-group";
+import { connect } from 'react-redux';
+
 
 
 // const hideElm = (e) => {
@@ -35,12 +36,13 @@ class App extends Component {
   state = {
     pics: [],
     page: 0,
-    query: '',
+    // query: '',
   }
 
   // componentDidUpdate = () => {
      
   // }
+  
 
   handleSubmit = (event, query) => {
     query ? this.setState({query: query.split(' ').join('+')}) : query = this.state.query;
@@ -90,22 +92,30 @@ class App extends Component {
     });
   };
 
+ 
+
   render() {
     return (
       <MuiThemeProvider theme={theme}>
+
         <Grid container direction="column" alignItems="center" >
             <Grid item xs={12} >
               <TopNav />
-              <Results />
             </Grid>
             <Grid item xs={12}  style={{marginTop: '50px'}}>
               <Grid container direction="row" alignItems="center">
                 <Grid item>
-                  <SearchForm page={this.state.page} index={this.state.pics.length} getPics={getPictures} handleSubmit={this.handleSubmit} q={''}/>
+                  <SearchForm getPics={getPictures} handleSubmit={this.handleSubmit}/>
                   <Button onClick={this.handleClear}>Clear </Button>
                 </Grid>
               </Grid>
-            
+              <pre>
+                {
+                  JSON.stringify(this.props)
+                }
+                </pre>
+              <button onClick={this.simpleAction}>Test redux action</button>
+
             </Grid>
             <Grid item >
               <SortableGallery
@@ -126,6 +136,11 @@ class App extends Component {
       
     );
   }
+  
 }
 
-export default App;
+const mapStateToProps = state => ({
+  ...state
+ });
+
+export default connect(mapStateToProps)(App);
