@@ -13,40 +13,39 @@ import Photo from "./containers/Photo";
 import SearchForm from './containers/SearchForm'
 import { getPictures } from './requests/getPhotos'
 import { theme } from './styles/theme'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-import { CSSTransition } from "react-transition-group";
+// import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+// import { CSSTransition } from "react-transition-group";
 import { connect } from 'react-redux';
 
 
-
-// const hideElm = (e) => {
-
-// };
-
 const SortablePhoto = SortableElement(Photo);
-// const pressThreshold = 100;
 const SortableGallery = SortableContainer(({ photos, hidden }) => {
   return <Gallery photos={photos} direction="row" ImageComponent={SortablePhoto} hideStatus={hidden} />;
 });
 
-// let q = '';
 let result;
 
 class App extends Component {
   state = {
     pics: [],
     page: 0,
-    // query: '',
   }
-
-  // componentDidUpdate = () => {
-     
-  // }
   
 
   handleSubmit = (event, query) => {
-    query ? this.setState({query: query.split(' ').join('+')}) : query = this.state.query;
-    // query ? query = query.split(' ').join('+') : query = this.state.query;
+    // debugger;
+    if( query ){
+      query = query.split(' ').join('+');
+      this.props.setQuery(query);
+      if(query !== this.props.query){
+        debugger;
+        this.setState({page: 0})
+      }
+    } else {
+      query = this.props.query;
+    }
+    
+    console.log(query)
     if(this.state.page === 0){
       let next = this.state.page + 1
       this.setState({ page: next})
@@ -70,19 +69,9 @@ class App extends Component {
   };
 ///////////////////////////////////////////////////////
   onMove = ({node, index, collection}, event) =>{
-    // event.target.style.border = "solid"
-    // debugger;
     node.firstElementChild.style.border = 'solid';
-    // console.log(node);
-    // console.log(event);
-
-    // console.log(event.target.style);
-    // .push({border: 'solid'});
   }
 
-  // onStop = ({oldIndex, newIndex, collection}, e) => {
-  //   debugger;
-  // }
 
   handleClear = (e) => {
     this.setState({
@@ -91,7 +80,6 @@ class App extends Component {
       query: '',
     });
   };
-
  
 
   render() {
@@ -105,17 +93,10 @@ class App extends Component {
             <Grid item xs={12}  style={{marginTop: '50px'}}>
               <Grid container direction="row" alignItems="center">
                 <Grid item>
-                  <SearchForm getPics={getPictures} handleSubmit={this.handleSubmit}/>
+                  <SearchForm handleSubmit={this.handleSubmit}/>
                   <Button onClick={this.handleClear}>Clear </Button>
                 </Grid>
               </Grid>
-              <pre>
-                {
-                  JSON.stringify(this.props)
-                }
-                </pre>
-              <button onClick={this.simpleAction}>Test redux action</button>
-
             </Grid>
             <Grid item >
               <SortableGallery
@@ -139,8 +120,18 @@ class App extends Component {
   
 }
 
-const mapStateToProps = state => ({
-  ...state
- });
+const mapStateToProps = (state) => {
+  console.log(state);
+   return {
+       query: state.setQuery.query
+   }
+}
 
-export default connect(mapStateToProps)(App);
+ const mapDispatchToProps = dispatch => ({
+  setQuery: (text) => dispatch({
+    type: 'UPDATE_QUERY',
+    query: text
+  })
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

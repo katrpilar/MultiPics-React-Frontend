@@ -1,63 +1,31 @@
-import React, { Component } from 'react'
-import Form from '../components/Form'
-import Transition from 'react-transition-group/Transition';
-import { connect } from 'react-redux';
-import { simpleAction } from '../actions/simpleAction'
+import React, { Component } from "react";
+import Form from "../components/Form";
+import { connect } from "react-redux";
 
+class SearchForm extends Component {
+  state = {
+    typing: ""
+  };
 
-class SearchForm extends Component{
-    state = {
-        // query: '',
-        testing: '',
-    }
+  handleChange = event => {
+    this.setState({ typing: event.target.value });
+  };
 
-    // componentWillMount = () => {
-    //     this.setState({ in: true });
-    // }
-
-    // componentDidUpdate() {
-    //     this.props = this.state.query;
-    //     console.log(this.props);
-    // }
-    handleChange = (event) => {
-        // debugger;
-        this.props.simpleAction(event.target.value);
-
-    //    this.setState({query: event.target.value});
-    //    this.props.handleChange(event.target.value);      
-    }
-
-    // simpleAction = (event) => {
-    //     this.props.simpleAction();
-    //    }
-
-     
-    render(){
-        return(
-            <div>
-                <Form handleSubmit={this.props.handleSubmit} handleChange={this.handleChange}/>
-                <pre>
-                    <h6>Props:</h6>
-                {
-                  JSON.stringify(this.props)
-                }
-                <br></br>
-                <h6>State:</h6>
-                {
-                  JSON.stringify(this.state)
-                }
-                </pre>
-                </div>
-            )
-    }
+  render() {
+    return (
+      <div>
+        <Form
+          handleSubmit={this.props.handleSubmit}
+          handleChange={this.handleChange}
+          query={this.state.typing}
+        />
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = state => ({
-    ...state
-   });
-  
-const mapDispatchToProps = dispatch => ({
-    simpleAction: () => dispatch(simpleAction())
+  ...state
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchForm);
+export default connect(mapStateToProps)(SearchForm);

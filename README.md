@@ -49,3 +49,5 @@ REACT_APP_PIXABAY_API_KEY = [Your Pixabay key]
 ```
 process.env.REACT_APP_UNSPLASH_ACCESS_KEY
 ```
+# Feature Roadmap
+This project is ongoing. [Click Here](https://github.com/katrpilar/free-stock-react/blob/master/planning.md) to view the planned feature roadmap.
