@@ -4,24 +4,14 @@ import { MuiThemeProvider,
         Grid } from '@material-ui/core';
 import TopNav from './common/TopNav'
 // import { withStyles } from '@material-ui/core/styles';
-import Gallery from 'react-photo-gallery'
-import { SortableContainer,
-  SortableElement,
-  arrayMove
-} from "react-sortable-hoc";
-import Photo from "./containers/Photo";
 import SearchForm from './containers/SearchForm'
 import { getPictures } from './requests/getPhotos'
 import { theme } from './styles/theme'
 // import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 // import { CSSTransition } from "react-transition-group";
 import { connect } from 'react-redux';
+import SearchResults from './containers/SearchResults';
 
-
-const SortablePhoto = SortableElement(Photo);
-const SortableGallery = SortableContainer(({ photos, hidden }) => {
-  return <Gallery photos={photos} direction="row" ImageComponent={SortablePhoto} hideStatus={hidden} />;
-});
 
 let result;
 
@@ -29,8 +19,7 @@ class App extends Component {
   state = {
     pics: [],
     page: 0,
-  }
-  
+  }  
 
   handleSubmit = (event, query) => {
     // debugger;
@@ -38,7 +27,6 @@ class App extends Component {
       query = query.split(' ').join('+');
       this.props.setQuery(query);
       if(query !== this.props.query){
-        debugger;
         this.setState({page: 0})
       }
     } else {
@@ -59,17 +47,6 @@ class App extends Component {
       this.setState(result);
     }
     event.preventDefault();
-  }
-
-///////////////////////////////////////////////////////
-   onSortEnd = ({ oldIndex, newIndex }) => {
-    this.setState({
-      pics: arrayMove(this.state.pics, oldIndex, newIndex)
-    });
-  };
-///////////////////////////////////////////////////////
-  onMove = ({node, index, collection}, event) =>{
-    node.firstElementChild.style.border = 'solid';
   }
 
 
@@ -99,15 +76,8 @@ class App extends Component {
               </Grid>
             </Grid>
             <Grid item >
-              <SortableGallery
-                axis={"xy"}
-                photos={this.state.pics}
-                onSortEnd={this.onSortEnd}
-                pressDelay={100}
-                // onSortStart={this.onMove}
-                hidden={false}
-                key="gallery"
-              />
+              <SearchResults pics={this.state.pics}/>
+              
             <Grid item>
             {this.state.page === 0 ? null : <Button color="secondary" href="#" size="small" variant="contained" style={{width: 'fit-conent'}} onClick={this.handleSubmit}>Show More</Button>}
             </Grid>
@@ -120,12 +90,9 @@ class App extends Component {
   
 }
 
-const mapStateToProps = (state) => {
-  console.log(state);
-   return {
-       query: state.setQuery.query
-   }
-}
+const mapStateToProps = state => ({
+  query: state.setQuery.query
+});
 
  const mapDispatchToProps = dispatch => ({
   setQuery: (text) => dispatch({

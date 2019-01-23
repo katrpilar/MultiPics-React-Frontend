@@ -14,6 +14,7 @@
 - Implement recently downloaded feed UI pulling from Rails API
 
 ### Bugs?
+- Page counter is off
 - Submitting search form by button rather than pressing enter is slow/doesn't render
     -  first submit of search form won't render search results unless submitted again
     - Problem with fetch request not completing before trying to render

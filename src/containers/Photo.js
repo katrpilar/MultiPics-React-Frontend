@@ -280,7 +280,6 @@ const Photo = ({
                 >
                   <Close
                     style={{ color: "#ffffff" }}
-                    onClick={e => e.stopPropagation()}
                   />
                 </Fab>
                 
