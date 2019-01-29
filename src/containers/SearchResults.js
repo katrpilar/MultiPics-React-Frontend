@@ -1,31 +1,39 @@
 import React, { Fragment, Component } from "react";
 import Gallery from "react-photo-gallery";
-import {
-  SortableContainer,
-  SortableElement,
-  arrayMove
-} from "react-sortable-hoc";
+import { SortableContainer, SortableElement, arrayMove } from "react-sortable-hoc";
 import Photo from "./Photo";
+import { connect } from 'react-redux';
 
 
+// const photos = [
+//   {
+//     src: "https://source.unsplash.com/2ShvY8Lf6l0/800x599",
+//     width: 4,
+//     height: 3
+//   },
+//   {
+//     src: "https://source.unsplash.com/Dm-qxdynoEc/800x799",
+//     width: 1,
+//     height: 1
+//   }];
 
 const SortablePhoto = SortableElement(Photo);
-const SortableGallery = SortableContainer(({ photos, hidden }) => {
-  return (
-    <Gallery
-      photos={photos}
-      direction="row"
-      ImageComponent={SortablePhoto}
-      hideStatus={hidden}
-    />
-  );
+const SortableGallery = SortableContainer(({ photos }) => {
+  return <Gallery photos={photos} direction="row" ImageComponent={SortablePhoto} />
 });
 
 class SearchResults extends Component {
+  state = {
+    photos: this.props.pics
+  }
   ///////////////////////////////////////////////////////
   onSortEnd = ({ oldIndex, newIndex }) => {
+    // this.props.setPhotos
+    console.log(`Old Index ${oldIndex}`)
+    console.log(`New Index ${newIndex}`)
+
     this.setState({
-      pics: arrayMove(this.state.pics, oldIndex, newIndex)
+      photos: arrayMove(this.state.photos, oldIndex, newIndex)
     });
   };
   ///////////////////////////////////////////////////////
@@ -37,15 +45,30 @@ class SearchResults extends Component {
     return (
       <SortableGallery
         axis={"xy"}
-        photos={this.props.pics}
+        photos={this.state.photos}
         onSortEnd={this.onSortEnd}
-        pressDelay={100}
+        pressDelay={150}
         // onSortStart={this.onMove}
-        hidden={false}
         key="gallery"
       />
     );
   }
 }
 
-export default SearchResults;
+const mapStateToProps = (state) => {
+  return {
+    pics: state.setPhotos.pics
+  }
+};
+
+ const mapDispatchToProps = (dispatch) => {
+  return {
+    setPhotos: (imgs) => dispatch({
+      type: 'SET_PHOTOS',
+      pics: imgs
+    })
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);
+// export default SearchResults;

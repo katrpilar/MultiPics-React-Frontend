@@ -103,7 +103,7 @@ export const getPictures = (ind, page, query, photos) => {
     // })
 
 
-    return ({pics: photos});
+    return (photos);
     // this.setState({ pics: photos});
     // console.log(this.state.metadata);
 

@@ -5,7 +5,7 @@ import { MuiThemeProvider,
         Grid } from '@material-ui/core';
 import { theme } from '../styles/theme'
 import logo from './multipicslogo.png'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 // import App from '../App';
 
 
@@ -13,7 +13,6 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
     render() {
     return (          
       <MuiThemeProvider theme={theme}>
-      <Router>
       <AppBar position="absolute" elevation={0} style={{background: "#f3f3f3"}}>      
         <Toolbar>
         <Grid justify="flex-start" container spacing={24} alignItems="center">
@@ -30,9 +29,9 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
           <Typography variant="h6" style={{color: theme.palette.primary.contrastText}}>
             News
           </Typography> */}
-          {/* <Typography variant="h6" gutterBottom={false} style={{color: theme.palette.primary.main}}>
-            <Link to="/search">Search</Link>            
-          </Typography> */}
+          <Typography variant="body1" gutterBottom={false} style={{color: theme.palette.primary.main}}>
+            {/* <Link to="/search">Search</Link>             */}
+          </Typography>
           
 
           {/* <StyledButton color="secondary.main" style={{color: theme.palette.primary.contrastText}}>Login</StyledButton> */}
@@ -43,7 +42,6 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
         </Toolbar>
         {/* <Route path="/search" component={App} /> */}
       </AppBar>
-      </Router>
       </MuiThemeProvider>
     );
   }}

@@ -1,3 +1,17 @@
+export function setQuery(text) {
+    return {
+        type: 'UPDATE_QUERY',
+        query: text
+      }
+  }
+  
+  export function setPhotos(photos) {
+    return {
+        type: 'SET_PHOTOS',
+        photos: photos
+      }
+  }
+
 // import getPhotos from '../requests/getPhotos'
 
 // export const REQUEST_POSTS = 'REQUEST_POSTS'

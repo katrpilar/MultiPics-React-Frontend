@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
 import { Provider } from 'react-redux'
-import { Router } from 'react-router';  
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -10,7 +10,10 @@ const store = configureStore();
 console.log(store.getState());
 
 ReactDOM.render(<Provider store={store}>
-        <App />
+    {/* <BrowserRouter>
+        <Route path="/" component={App} />
+    </BrowserRouter> */}
+    <App />
     </Provider>,
 document.getElementById('root'));
 
