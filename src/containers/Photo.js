@@ -89,19 +89,6 @@ const Photo = ({
 
   const hidePhoto = e => {
     setVisible(false);
-    // debugger;
-    // console.log(this);
-    // console.log(this.props.photos[index]);
-    // this.props.photos[index].hideStatus(true);
-    // debugger;
-    // e.preventDefault();
-    // e.stopPropagation();
-    // console.log(e.target.parentElement.parentElement.parentElement.parentElement.parentElement);
-    // e.target.parentElement.parentElement.parentElement.parentElement.nextElementSibling.remove();
-    // e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
-    // debugger;
-    // e.target.parentElement.parentElement.parentElement.parentElement.siblingElement.remove();
-    // e.target.style.display = 'none';
   };
 
   const metaMouse = e => {

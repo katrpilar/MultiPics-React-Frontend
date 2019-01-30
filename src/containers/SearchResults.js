@@ -4,19 +4,6 @@ import { SortableContainer, SortableElement, arrayMove } from "react-sortable-ho
 import Photo from "./Photo";
 import { connect } from 'react-redux';
 
-
-// const photos = [
-//   {
-//     src: "https://source.unsplash.com/2ShvY8Lf6l0/800x599",
-//     width: 4,
-//     height: 3
-//   },
-//   {
-//     src: "https://source.unsplash.com/Dm-qxdynoEc/800x799",
-//     width: 1,
-//     height: 1
-//   }];
-
 const SortablePhoto = SortableElement(Photo);
 const SortableGallery = SortableContainer(({ photos }) => {
   return <Gallery photos={photos} direction="row" ImageComponent={SortablePhoto} />
