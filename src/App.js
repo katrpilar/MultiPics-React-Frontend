@@ -25,6 +25,8 @@ class App extends Component {
   }
 
   handleSubmit = (event, query) => {
+    console.log(`Search Query: ${query}`)
+
     if( query ){
       query = query.split(' ').join('+');
       this.props.setQuery(query);
@@ -55,14 +57,17 @@ class App extends Component {
       this.props.setPhotos(result);
     }
     event.preventDefault();
+    console.log(`Page: ${this.state.page}`)
+    
   }
 
 
   handleClear = (e) => {
+    this.props.setQuery('');
+    this.props.setPhotos([]);
+
     this.setState({
-      pics: [],
       page: 0,
-      query: '',
     });
   };
  
