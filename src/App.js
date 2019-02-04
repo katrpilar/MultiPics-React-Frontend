@@ -24,53 +24,32 @@ class App extends Component {
     page: 0,
   }
 
-  handleSubmit = (event, query) => {
-    console.log(`Search Query: ${query}`)
-
-    if( query ){
-      query = query.split(' ').join('+');
-      this.props.setQuery(query);
-      if(query !== this.props.query){
-        this.setState({page: 0})
-      }
-    } else {
-      query = this.props.query;
-    }
-    
-    console.log(query)
-    if(this.state.page === 0){
-      let next = this.state.page + 1
-      this.setState({ page: next})
-      result = getPictures(1, next, query, this.props.pics);
-      // this.setState(result);
-      console.log(result)
-      this.props.setPhotos(result);
-    }else{
-      if(query !== this.props.query){
-        this.setState({page: 0})
-      }
-      let indx = this.props.pics.length + 1
-      let next = this.state.page + 1
-      this.setState({ page: next});
-      result = getPictures(indx, next, query, this.props.pics);
-      // this.setState(result);
-      this.props.setPhotos(result);
-    }
+  handleSubmit = (event, query = this.props.query) => {
     event.preventDefault();
-    console.log(`Page: ${this.state.page}`)
-    
+    query = query.split(' ').join('+');
+    let pictureCount = this.props.pics.length + 1;
+
+    if( query !== ""){
+      if( this.props.query === query){
+        let next = this.state.page + 1;
+        this.setState({page: next});
+        result = getPictures(pictureCount, next, query, this.props.pics);
+        this.props.setPhotos(result);
+      } else {
+        this.setState({page: 1});
+        result = getPictures(pictureCount, 1, query, this.props.pics);
+        this.props.setQuery(query);
+        this.props.setPhotos(result);
+      }
+    }    
   }
-
-
+  
   handleClear = (e) => {
+    e.preventDefault();
     this.props.setQuery('');
     this.props.setPhotos([]);
-
-    this.setState({
-      page: 0,
-    });
-  };
- 
+    this.setState({page: 0});
+  }; 
 
   render() {
     return (
