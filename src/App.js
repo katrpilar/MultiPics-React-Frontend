@@ -22,6 +22,7 @@ let result;
 class App extends Component {
   state = {
     page: 0,
+
   }
 
   handleSubmit = (event, query = this.props.query) => {
@@ -34,16 +35,18 @@ class App extends Component {
         let next = this.state.page + 1;
         this.setState({page: next});
         result = getPictures(pictureCount, next, query, this.props.pics);
+        // debugger;
         this.props.setPhotos(result);
       } else {
         this.setState({page: 1});
-        result = getPictures(pictureCount, 1, query, this.props.pics);
         this.props.setQuery(query);
+        result = getPictures(pictureCount, 1, query, this.props.pics);
+        // debugger;
         this.props.setPhotos(result);
       }
     }    
   }
-  
+
   handleClear = (e) => {
     e.preventDefault();
     this.props.setQuery('');
@@ -62,21 +65,22 @@ class App extends Component {
             <Grid item xs={12}  style={{marginTop: '50px'}}>
               <Grid container direction="row" alignItems="center">
                 <Grid item>
-                  <SearchForm handleSubmit={this.handleSubmit}/>
+                  <SearchForm handleSubmit={this.handleSubmit.bind(this)}/>
                   <Button onClick={this.handleClear}>Clear </Button>
                 </Grid>
               </Grid>
             </Grid>
-            
+            {this.props.pics.length > 0 ?
             <Grid item >
-              {this.props.pics.length > 0 ? <SearchResults pics={this.props.pics}/> : null}
+               <SearchResults pics={this.props.pics}/> 
             </Grid>
+            : null}
             {this.props.pics.length > 0 ?
               <Grid item >
                 <Typography variant="h4" gutterBottom={false} style={{color: theme.palette.primary.main}}>            
                   Would you like to view more photos from this search?
                 </Typography>
-                <Button color="secondary" href="#" size="large" variant="contained" onClick={this.handleSubmit} style={{textAlign: 'center'}}>Show More</Button>
+                <Button color="secondary" href="#" size="large" variant="contained" onClick={this.handleSubmit.bind(this)} style={{textAlign: 'center'}}>Show More</Button>
               </Grid>
             : null}
         </Grid>

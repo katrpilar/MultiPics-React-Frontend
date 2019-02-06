@@ -7,7 +7,10 @@ export const getPictures = (ind, page, query, photos) => {
     // let photos = this.state.pics;
      // alert('A name was submitted: ' + this.state.query);
     //setting temporary photos array to manipulate before adding to component state
-    q = !!(query) ? query : q;
+    let q = !!(query) ? query : q;
+
+    let hasErrors = false;
+    
     //A counter for the 'keys' of each image object to allow the state to tie 'metadata' to each image
     //TBD used to persist data to the Rails API backend database
     console.log(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=${page}&query=${q}&per_page=10`)
@@ -37,6 +40,8 @@ export const getPictures = (ind, page, query, photos) => {
     .catch(function (errors) {
       console.log('FAIL - Unsplash Api GET Request')
       console.log(errors)
+      hasErrors = true;
+      return "Fetch Error";
     });
 
     // ///////////////////////////////////////////////////////
@@ -62,9 +67,11 @@ export const getPictures = (ind, page, query, photos) => {
         })
         console.log("SUCCESS - Pexels Api GET Request");
       })
-      .catch(function (error) {
+      .catch(function (errors) {
         console.log('FAIL - Pexels Api GET Request');
-        console.log(error);
+        console.log(errors);
+        hasErrors = true;
+        return "Fetch Error";
       });
 
     //   ///////////////////////////////////////////////////////
@@ -94,6 +101,8 @@ export const getPictures = (ind, page, query, photos) => {
       .catch(function (error) {
         console.log('FAIL - Pixabay Api GET Request')
         console.log(error)
+        hasErrors = true;
+        return "Fetch Error";
       });
     
     //setting State for all available photos
@@ -102,8 +111,7 @@ export const getPictures = (ind, page, query, photos) => {
     //   p.metadata ={}
     // })
 
-
-    return (photos);
+    return (!hasErrors ? photos : "Fetch Error");
     // this.setState({ pics: photos});
     // console.log(this.state.metadata);
 
