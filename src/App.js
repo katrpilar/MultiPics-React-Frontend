@@ -57,7 +57,8 @@ class App extends Component {
       if( this.props.query === query){
         let next = this.state.page + 1;
         this.setState({page: next});
-        return this.fetchPhotos(pictureCount, 1, query, this.props.pics)();
+        debugger;
+        return this.fetchPhotos(pictureCount, next, query, this.props.pics)();
         // return this.fetchPhotos(next);
         // result = getPictures(pictureCount, next, query, this.props.pics);
         // debugger;
@@ -107,7 +108,7 @@ class App extends Component {
                 <Typography variant="h4" gutterBottom={false} style={{color: theme.palette.primary.main}}>            
                   Would you like to view more photos from this search?
                 </Typography>
-                <Button color="secondary" href="#" size="large" variant="contained" onClick={this.handleSubmit.bind(this)} style={{textAlign: 'center'}}>Show More</Button>
+                <Button color="secondary" href="#" size="large" variant="contained" onClick={this.handleSubmit} style={{textAlign: 'center'}}>Show More</Button>
               </Grid>
             : null}
         </Grid>
