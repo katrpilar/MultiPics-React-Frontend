@@ -10,9 +10,9 @@ export const getPictures = (ind, page, query, photos) => {
 
     let hasErrors = false;
     
-    function getUnsplash(){
+    function getUnsplash(initialIndex, page, q, photos){
       console.log(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=${page}&query=${q}&per_page=10`)
-      axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=${page}&query=${q}&per_page=10`)
+      return axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=${page}&query=${q}&per_page=10`)
       .then(response => {
         const unsplash = response.data.results
         unsplash.map((obj, indx) => {
@@ -23,7 +23,7 @@ export const getPictures = (ind, page, query, photos) => {
           hsh.height = obj.height
           hsh.key = initialIndex.toString()
           hsh.metadata = {download: obj.links.download, brand: 'Unsplash', link: 'https://unsplash.com/', photographer: obj.user.name, profile: obj.user.portfolio_url};
-          return photos.push(hsh);        
+          photos.push(hsh);        
         })
         console.log("SUCCESS - Unsplash Api GET Request");
         return photos;
@@ -36,8 +36,8 @@ export const getPictures = (ind, page, query, photos) => {
       });
     }
     
-    function getPexels(){
-      axios.get(`https://api.pexels.com/v1/search?query=${q}+query&per_page=10&page=${page}`, {'headers': {'Authorization': process.env.REACT_APP_PEXELS_API_KEY}})
+    function getPexels(initialIndex, page, q, photos){
+      return axios.get(`https://api.pexels.com/v1/search?query=${q}+query&per_page=10&page=${page}`, {'headers': {'Authorization': process.env.REACT_APP_PEXELS_API_KEY}})
       .then(resp => {
         const pexels = resp.data.photos
         // this.setState(() => { return { pexels: pexels }})
@@ -50,7 +50,7 @@ export const getPictures = (ind, page, query, photos) => {
           hshh.key = initialIndex;
           hshh.id = initialIndex.toString();
           hshh.metadata = {download: obj.src.original, brand: 'Pexels', link: 'https://www.pexels.com/', photographer: obj.photographer, profile: obj.photographer_url};
-          return photos.push(hshh);
+          photos.push(hshh);
         })
         console.log("SUCCESS - Pexels Api GET Request");
         return photos;
@@ -63,8 +63,8 @@ export const getPictures = (ind, page, query, photos) => {
       });
     }
     
-    function getPixabay(){
-      axios.get(`https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${q}&per_page=10&page=${page}`)
+    function getPixabay(initialIndex, page, q, photos){
+      return axios.get(`https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${q}&per_page=10&page=${page}`)
       .then(resp => {
         console.log(resp)
         const pixabay = resp.data.hits
@@ -76,7 +76,7 @@ export const getPictures = (ind, page, query, photos) => {
           hshh.height = obj.webformatHeight;
           hshh.key = initialIndex.toString();
           hshh.metadata = {download: obj.largeImageURL, brand: 'Pixabay', link: 'https://www.pixabay.com/', photographer: obj.user, profile: `https://pixabay.com/users/${obj.user}-${obj.user_id}/`};
-          return photos.push(hshh);
+          photos.push(hshh);
         })
         console.log("SUCCESS - Pixabay Api GET Request")
         return photos;
@@ -91,10 +91,14 @@ export const getPictures = (ind, page, query, photos) => {
 
     // return (!hasErrors ? photos : "Fetch Error");
 
-    axios.all([getUnsplash(), getPexels(), getPixabay()])
-    .then(axios.spread(function (photos) {
+    return axios.all([getUnsplash(initialIndex, page, q, photos), getPexels(initialIndex, page, q, photos), getPixabay(initialIndex, page, q, photos)])
+    .then(axios.spread(function (pix) {
       // Both requests are now complete
-    }));   
+      // debugger;
+      return pix;
+    }
+    
+    ));   
   }
 
   export default getPictures;

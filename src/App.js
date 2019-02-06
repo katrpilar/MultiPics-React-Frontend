@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import SearchResults from './containers/SearchResults';
 import Search from './containers/Search'
 import { Route } from 'react-router-dom'
+// import { fetchPhotos } from './actions/actionIndex'
 // import { setQuery, setPhotos } from './actions/actionIndex'
 
 
@@ -25,24 +26,50 @@ class App extends Component {
 
   }
 
+
+  fetchPhotos = (pictureCount, nextPage, query, pix) => {
+    return (dispatch, getState) => {
+      //Get pictureCount from the current state
+      //Get the current query from current
+      // debugger;
+      // let pictureCount = this.props.pics.length;
+      // let query = getState().query;
+      // let photos = getState().pics;
+      //pictureCount, nextPage, query, allPictures
+      // getPictures(pictureCount, nextPage, query, photos).then(
+      getPictures(pictureCount, nextPage, query, pix).then(
+      pics => {
+          pics == "Fetch Error" ? console.log("Action didn't dispatch") : this.props.setPhotos(pics)
+        }
+      );
+    };
+  }
+
   handleSubmit = (event, query = this.props.query) => {
     event.preventDefault();
     query = query.split(' ').join('+');
     let pictureCount = this.props.pics.length + 1;
+    // let pics = this.props.pics;
+    // debugger;
+    // console.log(`Your pics: ${pics}`)
 
     if( query !== ""){
       if( this.props.query === query){
         let next = this.state.page + 1;
         this.setState({page: next});
-        result = getPictures(pictureCount, next, query, this.props.pics);
+        return this.fetchPhotos(pictureCount, 1, query, this.props.pics)();
+        // return this.fetchPhotos(next);
+        // result = getPictures(pictureCount, next, query, this.props.pics);
         // debugger;
-        this.props.setPhotos(result);
+        // this.props.setPhotos(result);
       } else {
         this.setState({page: 1});
         this.props.setQuery(query);
-        result = getPictures(pictureCount, 1, query, this.props.pics);
         // debugger;
-        this.props.setPhotos(result);
+        return this.fetchPhotos(pictureCount, 1, query, [])();
+        // result = getPictures(pictureCount, 1, query, this.props.pics);
+        // debugger;
+        // this.props.setPhotos(result);
       }
     }    
   }

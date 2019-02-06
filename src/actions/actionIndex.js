@@ -16,19 +16,20 @@ export function setQuery(text) {
 
 
   //Rewritting get photos function
-  function fetchPhotos(nextPage) {
+  export function fetchPhotos(nextPage) {
     return (dispatch, getState) => {
       //Get pictureCount from the current state
       //Get the current query from current
+      debugger;
       let pictureCount = getState().pics.length;
       let query = getState().query;
       let pics = getState().pics;
       //pictureCount, nextPage, query, allPictures
-      return getPictures(pictureCount, nextPage, query, pics).then(
+      return dispatch(getPictures(pictureCount, nextPage, query, pics).then(
         photos => {
           photos == "Fetch Error" ? console.log("Action didn't dispatch") : dispatch(setPhotos(photos))
         }
-      )
+      ));
     };
   }
 

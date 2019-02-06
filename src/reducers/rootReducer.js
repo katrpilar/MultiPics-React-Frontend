@@ -24,7 +24,7 @@ const setPhotos = (state = {pics: []}, action) => {
   console.log(action);
   switch (action.type) {
     case 'SET_PHOTOS':
-      console.log(`Action Pics: ${JSON.stringify(action)}`);
+      console.log(`Action Pics: ${JSON.stringify(action.pics)}`);
      return {...state, pics: action.pics}
     default:
      return state
