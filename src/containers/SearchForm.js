@@ -8,7 +8,9 @@ class SearchForm extends Component {
   };
 
   handleChange = event => {
-    this.setState({ typing: event.target.value });
+    query = query.split(' ').join('+');
+    this.props.setQuery(event.target.value)
+    // this.setState({ typing: event.target.value });
   };
 
   render() {
@@ -24,8 +26,20 @@ class SearchForm extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  ...state
-});
+const mapStateToProps = (state) => {
+  return {
+    query: state.setQuery.query
+  }
+};
 
-export default connect(mapStateToProps)(SearchForm);
+ const mapDispatchToProps = (dispatch) => {
+  return {
+    setQuery: (text) => dispatch({
+      type: 'UPDATE_QUERY',
+      query: text
+    })
+  }
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchForm);

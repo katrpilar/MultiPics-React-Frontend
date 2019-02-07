@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 class Form extends Component{
     render(){
         return(
-            <form onSubmit={(e) => this.props.handleSubmit(e, this.props.query)} >
+            <form onSubmit={(e) => this.props.handleSubmit(e)} >
                 <TextField
                     id="standard-search"
                     label="Search field"

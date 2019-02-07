@@ -23,32 +23,30 @@ let result;
 class App extends Component {
   state = {
     page: 0,
-
   }
 
-
-  fetchPhotos = (nextPage, query, pix) => {
-
-      return getPictures(nextPage, query, pix).then(
-      pics => {
-          pics == "Fetch Error" ? console.log("Action didn't dispatch") : this.props.setPhotos(pics)
-        }
-      );
+  fetchPhotos = (nextPage, pix) => {
+    return getPictures(nextPage, this.props.query, pix).then(
+    pics => {
+        pics == "Fetch Error" ? console.log("Action didn't dispatch") : this.props.setPhotos(pics)
+      }
+    );
   }
 
-  handleSubmit = (event, query = this.props.query) => {
+  handleSubmit = (event) => {
     event.preventDefault();
-    query = query.split(' ').join('+');
     let pictureCount = this.props.pics.length + 1;
     let pics = this.props.pics;
 
-    if( query !== ""){
+    if( this.props.query ){
       if( this.props.query === query){
         let next = this.state.page + 1;
         this.setState({page: next});
-        //This is successfully setting the Redux store state but the additional photos are not added
-        //Need to debug further
-        this.fetchPhotos(next, query, pics);
+        const newPhotos = this.fetchPhotos(next, query, pics);
+        dispatch({
+          type: 'ADD_MORE_PHOTOS',
+          pics: newPhotos,
+        });
       } else {
         this.setState({page: 1});
         this.props.setQuery(query);
@@ -103,20 +101,20 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    query: state.setQuery.query,
-    pics: state.setPhotos.pics
+    pics: state.setPhotos.pics,
+    query: state.setQuery.query
   }
 };
 
  const mapDispatchToProps = (dispatch) => {
   return {
-    setQuery: (text) => dispatch({
-      type: 'UPDATE_QUERY',
-      query: text
-    }),
     setPhotos: (imgs) => dispatch({
       type: 'SET_PHOTOS',
       pics: imgs
+    }),
+    setPreviousQuery: (text) => dispatch({
+      type: 'SET_PREVIOUS_QUERY',
+      query: text
     })
   }
 };

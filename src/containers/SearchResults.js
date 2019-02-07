@@ -13,6 +13,14 @@ class SearchResults extends Component {
   state = {
     photos: this.props.pixs
   }
+
+  componentWillReceiveProps = (nextProps) => {
+    // You don't have to do this check first, but it can help prevent an unneeded render
+    debugger;
+    if (nextProps.pixs !== this.state.photos) {
+      this.setState({ photos: nextProps.pixs });
+    }
+  }
   ///////////////////////////////////////////////////////
   onSortEnd = ({ oldIndex, newIndex }) => {
     // this.props.setPhotos
@@ -32,7 +40,7 @@ class SearchResults extends Component {
     return (
       <SortableGallery
         axis={"xy"}
-        photos={this.props.pixs}
+        photos={this.state.photos}
         onSortEnd={this.onSortEnd}
         pressDelay={150}
         // onSortStart={this.onMove}
