@@ -11,7 +11,7 @@ const SortableGallery = SortableContainer(({ photos }) => {
 
 class SearchResults extends Component {
   state = {
-    photos: this.props.pics
+    photos: this.props.pixs
   }
   ///////////////////////////////////////////////////////
   onSortEnd = ({ oldIndex, newIndex }) => {
@@ -32,7 +32,7 @@ class SearchResults extends Component {
     return (
       <SortableGallery
         axis={"xy"}
-        photos={this.state.photos}
+        photos={this.props.pixs}
         onSortEnd={this.onSortEnd}
         pressDelay={150}
         // onSortStart={this.onMove}

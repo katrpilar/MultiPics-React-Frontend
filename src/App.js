@@ -27,50 +27,32 @@ class App extends Component {
   }
 
 
-  fetchPhotos = (pictureCount, nextPage, query, pix) => {
-    return (dispatch, getState) => {
-      //Get pictureCount from the current state
-      //Get the current query from current
-      // debugger;
-      // let pictureCount = this.props.pics.length;
-      // let query = getState().query;
-      // let photos = getState().pics;
-      //pictureCount, nextPage, query, allPictures
-      // getPictures(pictureCount, nextPage, query, photos).then(
-      getPictures(pictureCount, nextPage, query, pix).then(
+  fetchPhotos = (nextPage, query, pix) => {
+
+      return getPictures(nextPage, query, pix).then(
       pics => {
           pics == "Fetch Error" ? console.log("Action didn't dispatch") : this.props.setPhotos(pics)
         }
       );
-    };
   }
 
   handleSubmit = (event, query = this.props.query) => {
     event.preventDefault();
     query = query.split(' ').join('+');
     let pictureCount = this.props.pics.length + 1;
-    // let pics = this.props.pics;
-    // debugger;
-    // console.log(`Your pics: ${pics}`)
+    let pics = this.props.pics;
 
     if( query !== ""){
       if( this.props.query === query){
         let next = this.state.page + 1;
         this.setState({page: next});
-        debugger;
-        return this.fetchPhotos(pictureCount, next, query, this.props.pics)();
-        // return this.fetchPhotos(next);
-        // result = getPictures(pictureCount, next, query, this.props.pics);
-        // debugger;
-        // this.props.setPhotos(result);
+        //This is successfully setting the Redux store state but the additional photos are not added
+        //Need to debug further
+        this.fetchPhotos(next, query, pics);
       } else {
         this.setState({page: 1});
         this.props.setQuery(query);
-        // debugger;
-        return this.fetchPhotos(pictureCount, 1, query, [])();
-        // result = getPictures(pictureCount, 1, query, this.props.pics);
-        // debugger;
-        // this.props.setPhotos(result);
+        return this.fetchPhotos(1, query, []);
       }
     }    
   }
@@ -100,7 +82,7 @@ class App extends Component {
             </Grid>
             {this.props.pics.length > 0 ?
             <Grid item >
-               <SearchResults pics={this.props.pics}/> 
+               <SearchResults pixs={this.props.pics}/> 
             </Grid>
             : null}
             {this.props.pics.length > 0 ?
@@ -108,7 +90,7 @@ class App extends Component {
                 <Typography variant="h4" gutterBottom={false} style={{color: theme.palette.primary.main}}>            
                   Would you like to view more photos from this search?
                 </Typography>
-                <Button color="secondary" href="#" size="large" variant="contained" onClick={this.handleSubmit} style={{textAlign: 'center'}}>Show More</Button>
+                <Button color="secondary" href="#" size="large" variant="contained" onClick={this.handleSubmit.bind(this)} style={{textAlign: 'center'}}>Show More</Button>
               </Grid>
             : null}
         </Grid>
