@@ -8,8 +8,12 @@ import SearchForm from './containers/SearchForm'
 import { getPictures } from './requests/getPhotos'
 import { theme } from './styles/theme'
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
 import SearchResults from './containers/SearchResults';
 import { Route } from 'react-router-dom'
+import * as actionCreators from './actions/actionIndex';
+import { SET_QUERY, SET_PHOTOS, ADD_MORE_PHOTOS, REMOVE_PHOTO } from './actions/actionTypes';
+
 
 
 class App extends Component {
@@ -20,15 +24,19 @@ class App extends Component {
   fetchPhotos = (nextPage, q, type) => {
     return getPictures(nextPage, q).then(
     pics => {
-        pics == "Fetch Error" ? console.log("Action didn't dispatch") : this.props.setPhotos(type, pics)
+        if(pics == "Fetch Error"){
+          console.log("Action didn't dispatch")
+        }else if(type === 'set'){
+          this.props.setPhotos(pics)
+        }else if(type === 'add'){
+          this.props.addPhotos(pics)
+        }
       }
     );
   }
 
   handleSubmit = (event, q) => {
     event.preventDefault();
-
-    let pics = this.props.pics;
     const { oldQuery } = this.props;
 
     const incrementPage = () => {
@@ -39,28 +47,26 @@ class App extends Component {
 
     if( q === oldQuery){
       let next = incrementPage();
-      this.fetchPhotos(next, q, "SET_PHOTOS");
+      this.fetchPhotos(next, q, 'add');
     } else {
       this.setState({page: 0});
+      debugger;
       this.props.setQuery(q);
       let next = incrementPage();
-      this.fetchPhotos(next, q, "ADD_MORE_PHOTOS");
+      this.fetchPhotos(next, q, 'set');
     }   
   }
 
   handleAddMorePhotos = (event, q) => {
     event.preventDefault();
-
-    let pics = this.props.pics;
-    const { oldQuery } = this.props;
-
+    
     const incrementPage = () => {
       let next = this.state.page + 1;
       this.setState({page: next});
       return next;
     }
     let next = incrementPage();
-    this.fetchPhotos(next, q, "ADD_MORE_PHOTOS");
+    this.fetchPhotos(next, q, 'add');
   }
 
   handleClear = (e) => {
@@ -115,16 +121,9 @@ const mapStateToProps = (state) => {
 };
 
  const mapDispatchToProps = (dispatch) => {
-  return {
-    setPhotos: (type, imgs) => dispatch({
-      type: type,
-      pics: imgs
-    }),
-    setQuery: (text) => {dispatch({
-      type: 'SET_QUERY',
-      query: text
-    })}
-  }
+  // let test = bindActionCreators(actionCreators, dispatch);
+  // debugger;
+  return bindActionCreators(actionCreators, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
