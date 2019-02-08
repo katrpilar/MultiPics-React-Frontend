@@ -1,18 +1,8 @@
 import axios from 'axios'
+import { hashCode } from '../helpers/keyHash'
 
 export const getPictures = (page, query) => {
     let hasErrors = false;
-
-    String.prototype.hashCode = function() {
-      var hash = 0, i, chr;
-      if (this.length === 0) return hash;
-      for (i = 0; i < this.length; i++) {
-        chr   = this.charCodeAt(i);
-        hash  = ((hash << 5) - hash) + chr;
-        hash |= 0; // Convert to 32bit integer
-      }
-      return hash;
-    };
     
     function getUnsplash(){
       console.log(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=${page}&query=${query}&per_page=10`)
@@ -24,7 +14,7 @@ export const getPictures = (page, query) => {
           hsh.src = obj.urls.small
           hsh.width = obj.width
           hsh.height = obj.height
-          hsh.key = hsh.src.hashCode();
+          hsh.key = hashCode(hsh.src);
           hsh.metadata = {download: obj.links.download, brand: 'Unsplash', link: 'https://unsplash.com/', photographer: obj.user.name, profile: obj.user.portfolio_url};
           return hsh;
         });
@@ -49,7 +39,7 @@ export const getPictures = (page, query) => {
           hshh.src = obj.src.medium;
           hshh.width = obj.width;
           hshh.height = obj.height;
-          hshh.key = hshh.src.hashCode();
+          hshh.key = hashCode(hshh.src);
           hshh.metadata = {download: obj.src.original, brand: 'Pexels', link: 'https://www.pexels.com/', photographer: obj.photographer, profile: obj.photographer_url};
           return hshh;
         })
@@ -74,7 +64,7 @@ export const getPictures = (page, query) => {
           hshh.src = obj.webformatURL;
           hshh.width = obj.webformatWidth;
           hshh.height = obj.webformatHeight;
-          hshh.key = hshh.src.hashCode();
+          hshh.key = hashCode(hshh.src);
           hshh.metadata = {download: obj.largeImageURL, brand: 'Pixabay', link: 'https://www.pixabay.com/', photographer: obj.user, profile: `https://pixabay.com/users/${obj.user}-${obj.user_id}/`};
           return hshh;
         })

@@ -2,6 +2,7 @@ import React from "react";
 import Fab from "@material-ui/core/Fab";
 import CloudDownload from "@material-ui/icons/CloudDownload";
 import Close from "@material-ui/icons/Close";
+import { connect } from 'react-redux';
 
 // import { BrowserRouter as Router, Link} from 'react-router-dom'
 // import Metadata from "./components/Metadata";
@@ -90,6 +91,11 @@ const Photo = ({
   const hidePhoto = e => {
     setVisible(false);
   };
+
+  const removePhoto = (e, key) => {
+    e.preventDefault();
+    console.log(`Photo Key: ${key}`)
+  }
 
   const metaMouse = e => {
     e.target.style.backgroundColor = `${theme.palette.secondary.main}`;
@@ -255,7 +261,8 @@ const Photo = ({
                   aria-label="Hide"
                   size="small"
                   onMouseDown={e => e.stopPropagation()}
-                  onClick={hidePhoto}
+                  // onClick={hidePhoto}
+                  onClick={e => removePhoto(e, photo.key)}
                   className={classes.Fab}
                   style={{
                     float: "left",
@@ -346,4 +353,4 @@ const Photo = ({
     </div>
   );
 };
-export default withStyles(styles)(Photo);
+export default connect()(withStyles(styles)(Photo));

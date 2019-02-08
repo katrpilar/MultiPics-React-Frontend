@@ -29,6 +29,16 @@ const setPhotos = (state = { pics: [] }, action) => {
       const currentPhotos = state.pics;
       return( {...state, pics: [...currentPhotos, ...action.pics]});
     }
+    case "REMOVE_PHOTO":
+      const currentPhotos = [...state.pics];
+      const trimmedPics = currentPhotos.map(
+        p => {
+          if(p.key !== action.key){
+            return p;
+          }
+        }
+      )
+      return{ ...state, pics: trimmedPics}
     default:
       return state;
   }

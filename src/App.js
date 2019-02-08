@@ -17,7 +17,7 @@ class App extends Component {
     page: 0,
   }
 
-  fetchPhotos = (nextPage, q, pics, type) => {
+  fetchPhotos = (nextPage, q, type) => {
     return getPictures(nextPage, q).then(
     pics => {
         pics == "Fetch Error" ? console.log("Action didn't dispatch") : this.props.setPhotos(type, pics)
@@ -39,12 +39,12 @@ class App extends Component {
 
     if( q === oldQuery){
       let next = incrementPage();
-      this.fetchPhotos(next, q, pics, "SET_PHOTOS");
+      this.fetchPhotos(next, q, "SET_PHOTOS");
     } else {
       this.setState({page: 0});
       this.props.setQuery(q);
       let next = incrementPage();
-      this.fetchPhotos(next, q, pics, "SET_PHOTOS");
+      this.fetchPhotos(next, q, "ADD_MORE_PHOTOS");
     }   
   }
 
@@ -60,7 +60,7 @@ class App extends Component {
       return next;
     }
     let next = incrementPage();
-    this.fetchPhotos(next, q, pics, "ADD_MORE_PHOTOS");
+    this.fetchPhotos(next, q, "ADD_MORE_PHOTOS");
   }
 
   handleClear = (e) => {
