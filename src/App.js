@@ -4,55 +4,63 @@ import { MuiThemeProvider,
         Grid,
         Typography } from '@material-ui/core';
 import TopNav from './common/TopNav'
-// import { withStyles } from '@material-ui/core/styles';
 import SearchForm from './containers/SearchForm'
 import { getPictures } from './requests/getPhotos'
 import { theme } from './styles/theme'
-// import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
-// import { CSSTransition } from "react-transition-group";
 import { connect } from 'react-redux';
 import SearchResults from './containers/SearchResults';
-import Search from './containers/Search'
 import { Route } from 'react-router-dom'
-// import { fetchPhotos } from './actions/actionIndex'
-// import { setQuery, setPhotos } from './actions/actionIndex'
 
-
-let result;
 
 class App extends Component {
   state = {
     page: 0,
   }
 
-  fetchPhotos = (nextPage, pix) => {
-    return getPictures(nextPage, this.props.query, pix).then(
+  fetchPhotos = (nextPage, q, pics, type) => {
+    return getPictures(nextPage, q).then(
     pics => {
-        pics == "Fetch Error" ? console.log("Action didn't dispatch") : this.props.setPhotos(pics)
+        pics == "Fetch Error" ? console.log("Action didn't dispatch") : this.props.setPhotos(type, pics)
       }
     );
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = (event, q) => {
     event.preventDefault();
-    let pictureCount = this.props.pics.length + 1;
-    let pics = this.props.pics;
 
-    if( this.props.query ){
-      if( this.props.query === query){
-        let next = this.state.page + 1;
-        this.setState({page: next});
-        const newPhotos = this.fetchPhotos(next, query, pics);
-        dispatch({
-          type: 'ADD_MORE_PHOTOS',
-          pics: newPhotos,
-        });
-      } else {
-        this.setState({page: 1});
-        this.props.setQuery(query);
-        return this.fetchPhotos(1, query, []);
-      }
-    }    
+    let pics = this.props.pics;
+    const { oldQuery } = this.props;
+
+    const incrementPage = () => {
+      let next = this.state.page + 1;
+      this.setState({page: next});
+      return next;
+    }
+
+    if( q === oldQuery){
+      let next = incrementPage();
+      this.fetchPhotos(next, q, pics, "SET_PHOTOS");
+    } else {
+      this.setState({page: 0});
+      this.props.setQuery(q);
+      let next = incrementPage();
+      this.fetchPhotos(next, q, pics, "SET_PHOTOS");
+    }   
+  }
+
+  handleAddMorePhotos = (event, q) => {
+    event.preventDefault();
+
+    let pics = this.props.pics;
+    const { oldQuery } = this.props;
+
+    const incrementPage = () => {
+      let next = this.state.page + 1;
+      this.setState({page: next});
+      return next;
+    }
+    let next = incrementPage();
+    this.fetchPhotos(next, q, pics, "ADD_MORE_PHOTOS");
   }
 
   handleClear = (e) => {
@@ -88,7 +96,7 @@ class App extends Component {
                 <Typography variant="h4" gutterBottom={false} style={{color: theme.palette.primary.main}}>            
                   Would you like to view more photos from this search?
                 </Typography>
-                <Button color="secondary" href="#" size="large" variant="contained" onClick={this.handleSubmit.bind(this)} style={{textAlign: 'center'}}>Show More</Button>
+                <Button color="secondary" href="#" size="large" variant="contained" onClick={e => this.handleAddMorePhotos(e, this.props.query)} style={{textAlign: 'center'}}>Show More</Button>
               </Grid>
             : null}
         </Grid>
@@ -108,14 +116,14 @@ const mapStateToProps = (state) => {
 
  const mapDispatchToProps = (dispatch) => {
   return {
-    setPhotos: (imgs) => dispatch({
-      type: 'SET_PHOTOS',
+    setPhotos: (type, imgs) => dispatch({
+      type: type,
       pics: imgs
     }),
-    setPreviousQuery: (text) => dispatch({
-      type: 'SET_PREVIOUS_QUERY',
+    setQuery: (text) => {dispatch({
+      type: 'SET_QUERY',
       query: text
-    })
+    })}
   }
 };
 

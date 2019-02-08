@@ -2,14 +2,16 @@ import React, { Component } from "react";
 import Form from "../components/Form";
 import { connect } from "react-redux";
 
+
 class SearchForm extends Component {
   state = {
-    typing: ""
-  };
+    currentQuery: ''
+  }
 
-  handleChange = event => {
-    query = query.split(' ').join('+');
-    this.props.setQuery(event.target.value)
+  handleChange = (event) => {
+    let currentQuery = event.target.value.split(' ').join('+');
+    this.setState({currentQuery: currentQuery})
+    // this.props.setQuery(event.target.value)
     // this.setState({ typing: event.target.value });
   };
 
@@ -19,27 +21,27 @@ class SearchForm extends Component {
         <Form
           handleSubmit={this.props.handleSubmit}
           handleChange={this.handleChange}
-          query={this.state.typing}
+          value={this.state.currentQuery}
         />
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    query: state.setQuery.query
-  }
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     query: state.setQuery.query
+//   }
+// };
 
- const mapDispatchToProps = (dispatch) => {
-  return {
-    setQuery: (text) => dispatch({
-      type: 'UPDATE_QUERY',
-      query: text
-    })
-  }
-};
+//  const mapDispatchToProps = (dispatch) => {
+//   return {
+//     setQuery: (text) => dispatch({
+//       type: 'UPDATE_QUERY',
+//       query: text
+//     })
+//   }
+// };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchForm);
+export default connect()(SearchForm);
