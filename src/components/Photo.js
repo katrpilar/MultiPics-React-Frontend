@@ -3,9 +3,7 @@ import Fab from "@material-ui/core/Fab";
 import CloudDownload from "@material-ui/icons/CloudDownload";
 import Close from "@material-ui/icons/Close";
 import { connect } from 'react-redux';
-
 // import { BrowserRouter as Router, Link} from 'react-router-dom'
-// import Metadata from "./components/Metadata";
 import { theme } from "../styles/theme";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, AppBar, Toolbar } from "@material-ui/core";
@@ -32,18 +30,13 @@ const Photo = ({
   top,
   left,
   classes,
+  store,
+  handleRemove,
   isClosed,
   hideStatus,
   hidden
 }) => {
   // console.log(photo)
-
-  const [visible, setVisible] = React.useState(true);
-  
-  // console.log(photo);
-  // React.useEffect(() => {
-  //   !visible ? console.log(this) : console.log('nothing');
-  // });
 
   const imgWithClick = { cursor: "pointer" };
   const imgStyle = { margin: margin };
@@ -54,28 +47,20 @@ const Photo = ({
     imgStyle.top = top;
   }
 
-  const handleClick = event => {
-    onClick(event, { photo, index });
-  };
-
   const handleDrag = e => {
     e.stopPropagation();
-    // debugger;
     e.target.style.boxShadow =
       "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)";
     e.target.style.border = `solid ${theme.palette.secondary.main}`;
   };
 
   const handleDrop = e => {
-    // debugger;
     e.stopPropagation();
     e.target.style.border = "none";
-    // debugger;
     // e.target.style.boxShadow = "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)";
   };
 
   const handleUp = e => {
-    // debugger;
     e.stopPropagation();
     e.target.style.boxShadow =
       "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)";
@@ -88,13 +73,9 @@ const Photo = ({
       "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)";
   };
 
-  const hidePhoto = e => {
-    setVisible(false);
-  };
-
-  const removePhoto = (e, key) => {
-    e.preventDefault();
-    console.log(`Photo Key: ${key}`)
+  const removePhotoHandler = (event) => {
+    event.preventDefault();
+    onClick(event, {photo, index});
   }
 
   const metaMouse = e => {
@@ -231,7 +212,6 @@ const Photo = ({
 
   return (
     <div>
-      {visible ? (
         <div
           onMouseDown={handleDrag}
           onMouseLeave={handleDrop}
@@ -261,8 +241,7 @@ const Photo = ({
                   aria-label="Hide"
                   size="small"
                   onMouseDown={e => e.stopPropagation()}
-                  // onClick={hidePhoto}
-                  onClick={e => removePhoto(e, photo.key)}
+                  onClick={(e,p, k) => removePhotoHandler(e, photo, photo.key)}
                   className={classes.Fab}
                   style={{
                     float: "left",
@@ -271,6 +250,7 @@ const Photo = ({
                     display: "inline-flex",
                     left: "0px"
                   }}
+                  id={photo.key}
                 >
                   <Close
                     style={{ color: "#ffffff" }}
@@ -349,8 +329,9 @@ const Photo = ({
             </Grid>
           </Grid>
         </div>
-      ) : null}
     </div>
   );
 };
+
+
 export default connect()(withStyles(styles)(Photo));

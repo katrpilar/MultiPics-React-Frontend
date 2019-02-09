@@ -12,7 +12,7 @@ import { bindActionCreators } from 'redux'
 import SearchResults from './containers/SearchResults';
 import { Route } from 'react-router-dom'
 import * as actionCreators from './actions/actionIndex';
-import { SET_QUERY, SET_PHOTOS, ADD_MORE_PHOTOS, REMOVE_PHOTO } from './actions/actionTypes';
+// import { SET_QUERY, SET_PHOTOS, ADD_MORE_PHOTOS, REMOVE_PHOTO } from './actions/actionTypes';
 
 
 
@@ -50,7 +50,6 @@ class App extends Component {
       this.fetchPhotos(next, q, 'add');
     } else {
       this.setState({page: 0});
-      debugger;
       this.props.setQuery(q);
       let next = incrementPage();
       this.fetchPhotos(next, q, 'set');
@@ -59,7 +58,7 @@ class App extends Component {
 
   handleAddMorePhotos = (event, q) => {
     event.preventDefault();
-    
+
     const incrementPage = () => {
       let next = this.state.page + 1;
       this.setState({page: next});

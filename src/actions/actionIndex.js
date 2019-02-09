@@ -16,6 +16,12 @@ export function addPhotos(imgs){
   }
 }
 
+export function removePhoto(key){
+  return {
+    type: REMOVE_PHOTO,
+    key: key
+  }
+}
 
 export function setQuery(text){
   return {

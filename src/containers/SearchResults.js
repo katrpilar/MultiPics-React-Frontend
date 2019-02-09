@@ -1,12 +1,14 @@
 import React, { Fragment, Component } from "react";
 import Gallery from "react-photo-gallery";
 import { SortableContainer, SortableElement, arrayMove } from "react-sortable-hoc";
-import Photo from "./Photo";
-import { connect } from 'react-redux';
+import Photo from "../components/Photo";
+import { connect, ReactReduxContext } from 'react-redux';
+import { removePhoto } from '../actions/actionIndex';
+
 
 const SortablePhoto = SortableElement(Photo);
-const SortableGallery = SortableContainer(({ photos }) => {
-  return <Gallery photos={photos} direction="row" ImageComponent={SortablePhoto} />
+const SortableGallery = SortableContainer(({ photos, handleRemove }) => {
+  return <Gallery photos={photos} direction="row" ImageComponent={SortablePhoto} onClick={(e) => handleRemove(e)}/>
 });
 
 class SearchResults extends Component {
@@ -35,6 +37,11 @@ class SearchResults extends Component {
     node.firstElementChild.style.border = "solid";
   };
 
+  removeHandler = (e) => {
+    let ID = Number(e.target.parentElement.parentElement.id);
+    this.props.removePic(ID);
+  }
+
   render() {
     return (
       <SortableGallery
@@ -42,8 +49,8 @@ class SearchResults extends Component {
         photos={this.state.photos}
         onSortEnd={this.onSortEnd}
         pressDelay={150}
-        // onSortStart={this.onMove}
         key="gallery"
+        handleRemove={(e) => this.removeHandler(e)}
       />
     );
   }
@@ -60,7 +67,8 @@ const mapStateToProps = (state) => {
     setPhotos: (imgs) => dispatch({
       type: 'SET_PHOTOS',
       pics: imgs
-    })
+    }),
+    removePic: key => dispatch(removePhoto(key))
   }
 };
 
