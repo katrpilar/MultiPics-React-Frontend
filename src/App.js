@@ -17,9 +17,7 @@ class App extends Component {
         <Grid container direction="column" alignItems="center" >
             <Grid item xs={12} >
               <TopNav />
-              {/* <Route exact path="/search" component={Search} /> */}
             </Grid>
-            {/* <Search /> */}
         </Grid>
       </ MuiThemeProvider>      
     );

@@ -13,9 +13,6 @@ const setQuery = (state = { query: "" }, action) => {
 const setPhotos = (state = { pics: [] }, action) => {
   console.log(action);
   switch (action.type) {
-    case "SET_PHOTOS":
-      console.log(`Action Pics: ${JSON.stringify(action.pics)}`);
-      return({ ...state, pics: action.pics });
     case "ADD_MORE_PHOTOS": {
       const currentPhotos = state.pics;
       return( {...state, pics: [...currentPhotos, ...action.pics]});
@@ -23,9 +20,7 @@ const setPhotos = (state = { pics: [] }, action) => {
     case "REMOVE_PHOTO":
       const currentPhotos = [...state.pics];
       const trimmedPics = currentPhotos.filter(function(p){
-
         return p.key != action.key;
-    
         }
       )
       return{ ...state, pics: trimmedPics}

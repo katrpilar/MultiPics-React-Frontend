@@ -65,7 +65,7 @@ const mapStateToProps = (state) => {
  const mapDispatchToProps = (dispatch) => {
   return {
     setPhotos: (imgs) => dispatch({
-      type: 'SET_PHOTOS',
+      type: 'ADD_PHOTOS',
       pics: imgs
     }),
     removePic: key => dispatch(removePhoto(key))

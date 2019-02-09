@@ -26,13 +26,11 @@ class Search extends Component {
     page: 0
   };
 
-  fetchPhotos = (nextPage, q, type) => {
+  fetchPhotos = (nextPage, q) => {
     return getPictures(nextPage, q).then(pics => {
       if (pics == "Fetch Error") {
         console.log("Action didn't dispatch");
-      } else if (type === "set") {
-        this.props.setPhotos(pics);
-      } else if (type === "add") {
+      } else {
         this.props.addPhotos(pics);
       }
     });
@@ -50,12 +48,12 @@ class Search extends Component {
 
     if (q === oldQuery) {
       let next = incrementPage();
-      this.fetchPhotos(next, q, "add");
+      this.fetchPhotos(next, q);
     } else {
       this.setState({ page: 0 });
       this.props.setQuery(q);
       let next = incrementPage();
-      this.fetchPhotos(next, q, "set");
+      this.fetchPhotos(next, q);
     }
   };
 
@@ -68,7 +66,7 @@ class Search extends Component {
       return next;
     };
     let next = incrementPage();
-    this.fetchPhotos(next, q, "add");
+    this.fetchPhotos(next, q);
   };
 
   handleClear = e => {
