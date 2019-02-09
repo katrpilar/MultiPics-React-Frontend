@@ -8,6 +8,13 @@ export const getPictures = (page, query) => {
       console.log(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=${page}&query=${query}&per_page=10`)
       return axios.get(`https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}&page=${page}&query=${query}&per_page=10`)
       .then(response => {
+        //useful for determining rate limiting
+        // response.headers{
+        //   x-per-page: "10",
+        //   x-ratelimit-limit: "50",
+        //   x-ratelimit-remaining: "49",
+        //   x-total: "4773"
+        // }
         const unsplash = response.data.results
         const newPhotos = unsplash.map((obj, indx) => {
           let hsh = {}
@@ -29,11 +36,14 @@ export const getPictures = (page, query) => {
       });
     }
     
-    function getPexels(){
+
+    //Sometimes if you search the same search term within a short amount of time Pexels will fail
+    function getPexels(){ 
       return axios.get(`https://api.pexels.com/v1/search?query=${query}+query&per_page=10&page=${page}`, {'headers': {'Authorization': process.env.REACT_APP_PEXELS_API_KEY}})
       .then(resp => {
         const pexels = resp.data.photos
-        // this.setState(() => { return { pexels: pexels }})
+        // HTTP response header called "X-Ratelimit-Remaining" 
+        // ^^^^ NOT being included in response
         const newPhotos = pexels.map((obj, indx) => {
           let hshh = {};
           hshh.src = obj.src.medium;
@@ -83,6 +93,8 @@ export const getPictures = (page, query) => {
 
     return axios.all([getUnsplash(), getPexels(), getPixabay()])
     .then(axios.spread(function (unsplash, pexels, pixabay) {
+      //Implement a way to return the response objects from each API for collection of rate limit headers
+
       // Both requests are now complete
       const newPix = [...unsplash, ...pexels, ...pixabay];
       console.log(newPix);

@@ -2,7 +2,7 @@
 ### Essential Features
 - Redux (Actions)
     - SET_QUERY (done)
-    - SET_PHOTOS
+    - ADD_PHOTOS (done)
     - DELETE_PHOTO (maybe)
     - CLEAR_RESULTS = empties {page number, photos array, and search query}
     - SET_DOWNLOAD_FILTER = most recent, most popular
@@ -12,6 +12,17 @@
     - /most-popular
     - /trending
 - Implement recently downloaded feed UI pulling from Rails API
+- Architecture and Scaling
+    - Implment Rate Limiting
+        - Based on IP
+        - Based on Cookie Sessions?
+    - Determine Rate Limits
+        - Unsplash: Demo: 50 After Approved for Production: 5000 (per hour)
+        - Pixabay: 5000 / hour
+        - Pexels: 200 requests per hour and 20,000 requests per month
+    - *** Response headers will typically say how many more requests are remaining
+    - *** Might need to request more photos at a time but only show a small portion of them
+    - Response header api keys are visible in console. Need to find a way to mask this.
 
 ### Bugs?
 - Page counter is off
