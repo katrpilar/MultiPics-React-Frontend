@@ -2,7 +2,11 @@ import React, { Fragment, Component } from "react"
 import { MuiThemeProvider,
         Button,
         Grid,
-        Typography } from '@material-ui/core';
+        Typography,
+        Tooltip,
+        Fab } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import CloseOutlined from '@material-ui/icons/CloseOutlined';
 import TopNav from './common/TopNav'
 import SearchForm from './containers/SearchForm'
 import { getPictures } from './requests/getPhotos'
@@ -12,6 +16,8 @@ import { bindActionCreators } from 'redux'
 import SearchResults from './containers/SearchResults';
 import { Route } from 'react-router-dom'
 import * as actionCreators from './actions/actionIndex';
+import Fade from '@material-ui/core/Fade';
+import Zoom from '@material-ui/core/Zoom';
 // import { SET_QUERY, SET_PHOTOS, ADD_MORE_PHOTOS, REMOVE_PHOTO } from './actions/actionTypes';
 
 
@@ -87,7 +93,6 @@ class App extends Component {
               <Grid container direction="row" alignItems="center">
                 <Grid item>
                   <SearchForm handleSubmit={this.handleSubmit.bind(this)}/>
-                  <Button onClick={this.handleClear}>Clear </Button>
                 </Grid>
               </Grid>
             </Grid>
@@ -97,12 +102,18 @@ class App extends Component {
             </Grid>
             : null}
             {this.props.pics.length > 0 ?
-              <Grid item >
-                <Typography variant="h4" gutterBottom={false} style={{color: theme.palette.primary.main}}>            
-                  Would you like to view more photos from this search?
-                </Typography>
-                <Button color="secondary" href="#" size="large" variant="contained" onClick={e => this.handleAddMorePhotos(e, this.props.query)} style={{textAlign: 'center'}}>Show More</Button>
-              </Grid>
+              <div>
+                <Tooltip TransitionComponent={Zoom} title="RESET" placement="top">
+                  <Fab color="primary" aria-label="Add" onClick={(e) => { if (window.confirm('Are you sure you wish to clear all search results?')) this.handleClear(e) }} style={{position: 'fixed', bottom: '20px',right: '20px', zIndex: 10000, backgroundColor: '#d50000'}}>
+                    <CloseOutlined />
+                  </Fab>
+                </Tooltip>
+                <Tooltip TransitionComponent={Zoom} title="LOAD MORE" placement="top">
+                  <Fab color="primary" aria-label="Add" onClick={e => this.handleAddMorePhotos(e, this.props.query)} style={{position: 'fixed', bottom: '20px',right: '80px', zIndex: 10000, backgroundColor: theme.palette.primary.main}}>
+                    <AddIcon />
+                  </Fab>
+                </Tooltip>              
+              </div>
             : null}
         </Grid>
 

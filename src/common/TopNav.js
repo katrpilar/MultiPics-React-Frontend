@@ -29,6 +29,9 @@ import { Route, Link } from "react-router-dom";
           <Typography variant="h6" style={{color: theme.palette.primary.contrastText}}>
             News
           </Typography> */}
+          <Button>Search</Button>
+          <Button>Trending</Button>
+          <Button>Popular</Button>
           <Typography variant="body1" gutterBottom={false} style={{color: theme.palette.primary.main}}>
             {/* <Link to="/search">Search</Link>             */}
           </Typography>
