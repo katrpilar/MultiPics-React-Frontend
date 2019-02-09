@@ -14,6 +14,7 @@ class Form extends Component{
                     margin="normal"
                     onChange={(e) => this.props.handleChange(e)}
                     value={this.props.value}
+                    autoComplete='off'
                 />
                 <Button color="secondary" href="#" size="small" variant="outlined" type="submit" onClick={(e) => this.props.handleSubmit(e, this.props.value)} style={{verticalAlign: 'bottom'}}>Search</Button>
             </form>

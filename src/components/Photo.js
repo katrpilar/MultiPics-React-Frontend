@@ -219,7 +219,7 @@ const Photo = ({
         >
           <Grid container direction="row">
             <Grid item>
-              <div style={{ position: "relative" }}>
+              <div style={{ position: "relative" }} >
                 <img
                   style={
                     onClick
